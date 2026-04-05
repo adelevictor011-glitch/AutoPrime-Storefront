@@ -11,20 +11,19 @@ import {
   X, 
   Search, 
   Loader2, 
-  Calendar, 
-  Timer, 
-  AlertCircle, 
-  RefreshCw, 
   Truck, 
   Info, 
   Send,
   CreditCard,
-  Globe
+  Globe,
+  AlertCircle
 } from 'lucide-react';
 
 /**
- * AUTOPRIME ELITE STOREFRONT v4.6.1
- * The Platinum Standard in Automotive Acquisitions.
+ * AUTOPRIME ELITE STOREFRONT v4.6.4
+ * Production entry point for the AutoPrime Digital Showroom.
+ * Features: Live DMS Sync (Google Sheets), Anti-Crop Showroom, 
+ * Range Tag Extraction, and WhatsApp Lead Generation.
  */
 
 // --- CONFIGURATION ---
@@ -36,13 +35,13 @@ const Card = ({ car, formatDisplayPrice, whatsappNumber }) => {
   const [currentImg, setCurrentImg] = useState(0);
 
   const generateWhatsAppLink = () => {
-    const message = `Hi AutoPrime! I'm interested in the ${car.name}. Investment Value: ${formatDisplayPrice(car.basePrice)}. Please confirm availability and delivery timelines.`;
+    const message = `Hi AutoPrime! I'm interested in the ${car.name}. Investment Value: ${formatDisplayPrice(car.basePrice)}. Please confirm availability and nationwide delivery logistics.`;
     return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
   };
 
   const handleCarFinanceRequest = (e) => {
     e.stopPropagation();
-    const message = `Hi AutoPrime, I'm interested in the bespoke financing options available for the ${car.name}.`;
+    const message = `Hi AutoPrime, I would like to discuss bespoke financing and structured payment plans for the ${car.name}.`;
     window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
@@ -62,7 +61,7 @@ const Card = ({ car, formatDisplayPrice, whatsappNumber }) => {
 
   return (
     <div className="bg-white rounded-[4rem] overflow-hidden shadow-2xl shadow-slate-200/40 flex flex-col group border border-white transition-all hover:shadow-blue-100/30">
-      {/* Studio Showroom View */}
+      {/* Studio Showroom View (Anti-Crop) */}
       <div className="relative h-80 overflow-hidden bg-[#fcfcfc] flex items-center justify-center p-2">
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
         
@@ -72,7 +71,7 @@ const Card = ({ car, formatDisplayPrice, whatsappNumber }) => {
               <div key={i} className="w-full h-full flex-shrink-0 flex items-center justify-center p-4">
                  <img 
                   src={img} 
-                  alt={`${car.name} viewing ${i}`} 
+                  alt={`${car.name} viewing ${i + 1}`} 
                   className="max-w-full max-h-full object-contain drop-shadow-2xl transition-transform duration-700 group-hover:scale-105" 
                   onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=800'; }}
                 />
@@ -80,12 +79,12 @@ const Card = ({ car, formatDisplayPrice, whatsappNumber }) => {
             ))
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=800" className="max-w-full max-h-full object-contain" alt="placeholder" />
+              <Car className="opacity-10 w-20 h-20 text-slate-400" />
             </div>
           )}
         </div>
 
-        {/* Swipe Controls */}
+        {/* Gallery Controls */}
         {car.images && car.images.length > 1 && (
           <>
             <button onClick={prevImg} className="absolute left-6 top-1/2 -translate-y-1/2 p-2.5 bg-white/80 border border-slate-100 rounded-full text-slate-900 shadow-xl z-10 hover:bg-white active:scale-90 transition opacity-0 group-hover:opacity-100">
@@ -94,8 +93,6 @@ const Card = ({ car, formatDisplayPrice, whatsappNumber }) => {
             <button onClick={nextImg} className="absolute right-6 top-1/2 -translate-y-1/2 p-2.5 bg-white/80 border border-slate-100 rounded-full text-slate-900 shadow-xl z-10 hover:bg-white active:scale-90 transition opacity-0 group-hover:opacity-100">
               <ChevronRight size={20} />
             </button>
-            
-            {/* Gallery Progress Pips */}
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
               {car.images.map((_, i) => (
                 <div key={i} className={`h-1 rounded-full transition-all duration-300 ${i === currentImg ? 'w-6 bg-blue-600' : 'w-2 bg-slate-200'}`}></div>
@@ -104,7 +101,7 @@ const Card = ({ car, formatDisplayPrice, whatsappNumber }) => {
           </>
         )}
         
-        {/* Elite Category Badges */}
+        {/* Elite Badges */}
         <div className="absolute top-8 left-8 flex flex-col gap-2 z-10">
           <span className="px-5 py-2 rounded-full text-[10px] font-black uppercase shadow-sm bg-white border border-slate-100 text-slate-900 tracking-widest">{car.category}</span>
           <span className="bg-slate-900/95 text-white px-5 py-2 rounded-full text-[10px] font-black shadow-sm flex items-center gap-1.5 uppercase tracking-widest">
@@ -117,15 +114,7 @@ const Card = ({ car, formatDisplayPrice, whatsappNumber }) => {
           )}
         </div>
 
-        {/* Status Indicators */}
-        {car.status === 'Arriving' && (
-          <div className="absolute top-8 right-8 bg-blue-600 text-white px-5 py-2.5 rounded-2xl text-[10px] font-black shadow-xl animate-pulse z-10 uppercase tracking-widest">In Transit</div>
-        )}
-        {car.status === 'Pre Order Only' && (
-          <div className="absolute top-8 right-8 bg-indigo-600 text-white px-5 py-2.5 rounded-2xl text-[10px] font-black shadow-xl z-10 uppercase tracking-widest">Reserve Only</div>
-        )}
-        
-        {/* SOLD Indicator */}
+        {/* JUST ACQUIRED / SOLD Logic */}
         {car.status === 'Sold' && (
           <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-20 select-none">
             <div className="bg-red-600 text-white px-12 py-6 font-black text-4xl border-[10px] border-white shadow-2xl uppercase -rotate-12 transform scale-110 tracking-tighter ring-4 ring-red-600/50">
@@ -170,7 +159,7 @@ const Card = ({ car, formatDisplayPrice, whatsappNumber }) => {
               onClick={handleCarFinanceRequest} 
               className="w-full text-blue-600 font-black text-[10px] uppercase tracking-[0.3em] py-2 hover:underline decoration-blue-200 transition active:scale-90 flex items-center justify-center gap-2"
             >
-              <CreditCard size={14}/> Flexible Credit Options
+              <CreditCard size={14}/> Bespoke Credit Desk
             </button>
           )}
         </div>
@@ -190,46 +179,67 @@ export default function App() {
   const [error, setError] = useState(null);
   const [requestData, setRequestData] = useState({ make: '', model: '', budget: '' });
 
+  // --- GOOGLE DRIVE IMAGE FIX ---
   const cleanImageUrl = (url) => {
     if (!url || typeof url !== 'string') return 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=800';
     try {
       let trimmed = url.trim().replace(/^"|"$/g, '');
+      
       if (trimmed.includes('drive.google.com')) {
         let fileId = '';
         if (trimmed.includes('/file/d/')) fileId = trimmed.split('/file/d/')[1]?.split('/')[0]?.split('?')[0];
         else if (trimmed.includes('id=')) fileId = trimmed.split('id=')[1]?.split('&')[0];
         if (fileId) return `https://lh3.googleusercontent.com/u/0/d/${fileId}`;
       }
+
+      if (trimmed.includes('google.com/search?q=')) {
+        const urlParams = new URLSearchParams(trimmed.split('?')[1]);
+        const actualUrl = urlParams.get('q') || urlParams.get('imgurl');
+        trimmed = actualUrl ? decodeURIComponent(actualUrl) : trimmed;
+      }
+      
       return trimmed.startsWith('http') ? trimmed : 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=800';
     } catch (e) { return url; }
   };
 
+  // --- LIVE DMS FETCHING ---
   const fetchData = useCallback(async () => {
     try {
-      const response = await fetch(GOOGLE_SHEET_CSV_URL + `&t=${Date.now()}`);
+      const response = await fetch(`${GOOGLE_SHEET_CSV_URL}&t=${Date.now()}`);
       if (!response.ok) throw new Error(`DMS Offline`);
       const text = await response.text();
       const rows = text.split(/\r?\n/).filter(row => row.trim() !== '');
       if (rows.length < 2) throw new Error("Inventory Empty");
+
       const allData = rows.slice(1).map((row, index) => {
+        // Handle quoted values with commas
         const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
-        const rangeMatch = cols[1]?.match(/\d+\s?km/i) || cols[4]?.match(/\d+\s?km/i);
+        const rangeMatch = cols[1]?.match(/\d+\s?km/i) || cols[5]?.match(/\d+\s?km/i);
+
         return {
-          id: cols[0] || `auto-${index}`,
-          name: cols[1] || 'Elite Unit',
+          id: cols[0] || `idx-${index}`,
+          name: cols[1] || 'Premium Unit',
           basePrice: parseFloat((cols[2] || "0").replace(/[^0-9.]/g, '')) || 0,
           category: cols[3] || 'Used',
-          power: cols[4] || 'Fuel',
-          status: cols[5] || 'Available',
+          type: cols[4] || 'Foreign Used',
+          power: cols[5] || 'Fuel',
+          status: cols[6] || 'Available',
           rangeTag: rangeMatch ? rangeMatch[0].toUpperCase() : null,
-          images: (cols[6] || '').split(',').map(img => cleanImageUrl(img.trim())).filter(img => img !== '')
+          images: (cols[7] || '').split(',').map(img => cleanImageUrl(img.trim())).filter(img => img !== '')
         };
       });
+
+      // Live Rate Sync
       const rateRow = allData.find(item => item.id.toUpperCase() === 'RATE');
       if (rateRow && rateRow.basePrice > 0) setRates(prev => ({ ...prev, NGN: rateRow.basePrice }));
+
       setCars(allData.filter(item => item.id.toUpperCase() !== 'RATE' && item.name.length > 2));
       setError(null);
-    } catch (err) { setError(`Live Synchronization Failure`); } finally { setLoading(false); }
+    } catch (err) {
+      setError(`DMS Sync Failed: Ensure Sheet is Published to Web as CSV.`);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => { 
@@ -240,49 +250,60 @@ export default function App() {
 
   const formatDisplayPrice = (price) => {
     const rate = rates[currency] || 1;
-    return `${currency === 'USD' ? '$' : '₦'}${Math.round(price * rate).toLocaleString()}`;
-  };
-
-  const handleGlobalFinanceRequest = () => {
-    const message = "Hi AutoPrime, I'm interested in exploring car financing options.";
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+    const converted = Math.round(price * rate);
+    return `${currency === 'USD' ? '$' : '₦'}${converted.toLocaleString()}`;
   };
 
   const filteredCars = useMemo(() => 
-    selectedFilter === 'All' ? cars : cars.filter(car => car.category === selectedFilter || car.power === selectedFilter || car.status === selectedFilter), 
+    selectedFilter === 'All' ? cars : cars.filter(car => 
+      car.category === selectedFilter || car.power === selectedFilter || car.status === selectedFilter || car.type === selectedFilter
+    ), 
   [selectedFilter, cars]);
 
   if (loading && cars.length === 0) return (
     <div className="h-screen flex flex-col items-center justify-center bg-slate-950 text-white">
-      <Loader2 className="animate-spin mb-4 text-blue-500" />
+      <Loader2 className="animate-spin mb-4 text-blue-500 w-12 h-12" />
       <p className="text-[10px] uppercase tracking-[0.5em] opacity-40 font-black">Syncing Premium Fleet</p>
     </div>
   );
 
   return (
     <div className="min-h-screen bg-[#f8f9fc] font-sans text-slate-900 pb-20 selection:bg-blue-100">
+      
+      {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-white/70 backdrop-blur-3xl border-b border-slate-200/50 px-6 py-4 flex justify-between items-center shadow-sm">
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
           <div className="bg-slate-950 p-2 rounded-2xl shadow-xl shadow-slate-200"><Car className="text-white w-5 h-5" /></div>
           <h1 className="text-xl font-black tracking-tighter italic hidden sm:block uppercase">Auto<span className="text-blue-600">Prime</span></h1>
         </div>
         <div className="flex items-center gap-3">
-          <select className="bg-slate-50 border-2 border-slate-100 rounded-2xl px-4 py-2 text-[10px] font-black outline-none focus:border-blue-600 cursor-pointer appearance-none" value={currency} onChange={(e) => setCurrency(e.target.value)}>
+          <select 
+            className="bg-slate-50 border-2 border-slate-100 rounded-2xl px-4 py-2 text-[10px] font-black outline-none focus:border-blue-600 cursor-pointer appearance-none shadow-sm" 
+            value={currency} 
+            onChange={(e) => setCurrency(e.target.value)}
+          >
             <option value="USD">USD $</option>
             <option value="NGN">NGN ₦</option>
           </select>
-          <button onClick={() => setIsMenuOpen(true)} className="p-3 bg-slate-950 text-white rounded-2xl hover:bg-blue-600 transition active:scale-90"><Menu size={20} /></button>
+          <button onClick={() => setIsMenuOpen(true)} className="p-3 bg-slate-950 text-white rounded-2xl hover:bg-blue-600 transition active:scale-90 shadow-lg"><Menu size={20} /></button>
         </div>
       </nav>
 
-      {/* Hero */}
+      {/* Hero Presentation */}
       <header className="bg-slate-950 text-white px-6 py-32 text-center relative overflow-hidden">
         <div className="relative z-10 max-w-5xl mx-auto">
           <p className="text-blue-500 text-[10px] font-black uppercase tracking-[0.5em] mb-6">Experience the Extraordinary</p>
           <h2 className="text-6xl md:text-8xl font-black mb-10 leading-[0.85] tracking-tighter italic uppercase underline decoration-blue-600 decoration-8 underline-offset-8">THE <br/>PLATINUM <br/>STANDARD.</h2>
+          
           <div className="flex flex-wrap justify-center gap-2 mt-16 max-w-4xl mx-auto">
-            {['All', 'New', 'Foreign Used', 'Used', 'Pre Owned Low Milage', 'Electric', 'Hybrid'].map(cat => (
-              <button key={cat} onClick={() => setSelectedFilter(cat)} className={`px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all border ${selectedFilter === cat ? 'bg-blue-600 border-blue-600 text-white shadow-2xl scale-110' : 'bg-transparent border-slate-800 text-slate-500 hover:border-slate-600'}`}>
+            {['All', 'New', 'Foreign Used', 'Local Used', 'Pre Owned Low Milage', 'Electric', 'Hybrid'].map(cat => (
+              <button 
+                key={cat} 
+                onClick={() => setSelectedFilter(cat)} 
+                className={`px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all border ${
+                  selectedFilter === cat ? 'bg-blue-600 border-blue-600 text-white shadow-2xl scale-110' : 'bg-transparent border-slate-800 text-slate-500 hover:border-slate-600'
+                }`}
+              >
                 {cat}
               </button>
             ))}
@@ -296,11 +317,12 @@ export default function App() {
           <div className="mb-12 bg-red-50 border border-red-100 rounded-3xl p-6 flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3 text-red-700">
               <AlertCircle size={20} />
-              <p className="text-[10px] font-bold uppercase tracking-widest">{error}</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest leading-tight">{error}</p>
             </div>
             <button onClick={fetchData} className="bg-red-600 text-white px-6 py-2 rounded-xl text-xs font-black uppercase shadow-lg">Retry Sync</button>
           </div>
         )}
+        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
           {filteredCars.map(car => (
             <Card key={car.id} car={car} formatDisplayPrice={formatDisplayPrice} whatsappNumber={WHATSAPP_NUMBER} />
@@ -308,15 +330,19 @@ export default function App() {
         </div>
       </main>
 
-      {/* Bespoke Sourcing Section */}
+      {/* Procurement Section */}
       <section id="request" className="max-w-6xl mx-auto px-6 my-24">
         <div className="bg-white rounded-[4rem] p-12 md:p-20 border border-slate-100 shadow-2xl relative overflow-hidden flex flex-col lg:flex-row gap-16 items-center">
             <div className="flex-1 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-6"><Search size={14} /> Global Procurement</div>
-              <h2 className="text-5xl md:text-6xl font-black mb-6 tracking-tighter italic uppercase leading-none">Bespoke <br/><span className="text-blue-600 underline decoration-blue-100 underline-offset-8">Concierge</span></h2>
-              <p className="text-slate-500 text-lg font-medium leading-relaxed max-w-md">Our global network identifies, inspects, and delivers dream builds to your doorstep. If it exists, we will find it.</p>
+              <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-6"><Search size={14} /> Global Concierge</div>
+              <h2 className="text-5xl md:text-6xl font-black mb-6 tracking-tighter italic uppercase leading-none">Bespoke <br/><span className="text-blue-600 underline decoration-blue-100 underline-offset-8">Sourcing</span></h2>
+              <p className="text-slate-500 text-lg font-medium leading-relaxed max-w-md">Can't find your exact spec? Our global network identifies, inspects, and delivers dream builds to your doorstep nationwide.</p>
             </div>
-            <form onSubmit={(e) => { e.preventDefault(); window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi AutoPrime! I would like to initiate a Bespoke Sourcing request:\n\nBrand/Make: ${requestData.make}\nModel Year: ${requestData.model}\nTarget Budget: ${requestData.budget}`)}`, '_blank'); }} className="flex-1 w-full space-y-6">
+            <form onSubmit={(e) => { 
+              e.preventDefault(); 
+              const msg = `Hi AutoPrime! I would like to initiate a Bespoke Sourcing request:\n\nBrand/Make: ${requestData.make}\nModel Year: ${requestData.model}\nTarget Budget: ${requestData.budget}`;
+              window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank'); 
+            }} className="flex-1 w-full space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <input type="text" placeholder="Brand / Make" required className="w-full bg-slate-50 border-2 border-transparent focus:border-blue-600 focus:bg-white rounded-[2rem] px-8 py-5 text-lg font-bold outline-none transition-all shadow-sm" value={requestData.make} onChange={e => setRequestData({...requestData, make: e.target.value})} />
                 <input type="text" placeholder="Model Year" required className="w-full bg-slate-50 border-2 border-transparent focus:border-blue-600 focus:bg-white rounded-[2rem] px-8 py-5 text-lg font-bold outline-none transition-all shadow-sm" value={requestData.model} onChange={e => setRequestData({...requestData, model: e.target.value})} />
@@ -330,28 +356,29 @@ export default function App() {
         </div>
       </section>
 
-      {/* Strategic Credit Section */}
+      {/* Credit Section */}
       <section id="financing" className="max-w-6xl mx-auto px-6 mb-32">
         <div className="bg-slate-950 rounded-[4rem] p-16 md:p-24 text-white text-center relative overflow-hidden">
           <span className="bg-blue-600/30 text-blue-400 border border-blue-600/30 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest mb-10 inline-block">Strategic Acquisitions</span>
           <h3 className="text-5xl md:text-7xl font-black mb-8 leading-tight tracking-tighter uppercase italic">Tailored <br/>Credit Solutions</h3>
           <p className="text-slate-400 max-w-xl mx-auto mb-10 text-lg italic leading-relaxed">Speak with our private acquisition desk to discuss bespoke structured payment plans for elite inventory.</p>
-          <button onClick={handleGlobalFinanceRequest} className="bg-white text-slate-950 px-20 py-8 rounded-[3rem] font-black text-xl hover:scale-105 active:scale-95 transition-transform shadow-xl uppercase tracking-tighter">Initiate Consultation</button>
+          <button onClick={() => window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi AutoPrime, I'm interested in exploring bespoke car financing and acquisition credit options.")}`, '_blank')} className="bg-white text-slate-950 px-20 py-8 rounded-[3rem] font-black text-xl hover:scale-105 active:scale-95 transition-transform shadow-xl uppercase tracking-tighter">Initiate Consultation</button>
         </div>
       </section>
 
+      {/* Prestige Footer */}
       <footer className="text-center py-20 border-t border-slate-200">
         <div className="flex justify-center gap-8 mb-8 text-slate-300">
-          <Truck size={24} className="hover:text-blue-600 transition" />
-          <ShieldCheck size={24} className="hover:text-blue-600 transition" />
-          <TrendingUp size={24} className="hover:text-blue-600 transition" />
-          <Globe size={24} className="hover:text-blue-600 transition" />
+          <Truck size={24} className="hover:text-blue-600 transition cursor-help" />
+          <ShieldCheck size={24} className="hover:text-blue-600 transition cursor-help" />
+          <TrendingUp size={24} className="hover:text-blue-600 transition cursor-help" />
+          <Globe size={24} className="hover:text-blue-600 transition cursor-help" />
         </div>
-        <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.5em] mb-2 leading-loose px-6 text-center italic">AutoPrime Nationwide Logistics (Surcharge Applies) • DMS v4.6.1</p>
-        <p className="text-slate-300 text-[8px] font-bold uppercase tracking-widest mt-4">Verified Inventory System • Global Procurement Active</p>
+        <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.5em] mb-2 leading-loose px-6 text-center italic">AutoPrime Nationwide Logistics (Surcharge Applies) • DMS v4.6.4</p>
+        <p className="text-slate-300 text-[8px] font-bold uppercase tracking-widest mt-4">Verified Inventory System • Global Procurement Desk Active</p>
       </footer>
 
-      {/* Pro Menu Overlay */}
+      {/* Sidebar Overlay */}
       <div className={`fixed inset-0 z-[100] transition-all duration-500 ${isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
         <div className="absolute inset-0 bg-slate-950/95 backdrop-blur-xl" onClick={() => setIsMenuOpen(false)}></div>
         <div className={`absolute right-0 top-0 h-full w-full max-w-xs bg-white p-12 transition-transform duration-500 transform ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'} shadow-2xl`}>
