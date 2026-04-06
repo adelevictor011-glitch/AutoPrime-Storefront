@@ -1,3 +1,4 @@
+import './index.css';
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { 
   Car, 
