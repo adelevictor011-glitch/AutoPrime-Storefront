@@ -1,4 +1,3 @@
-import './index.css';
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { 
   Car, 
@@ -24,9 +23,10 @@ import {
 } from 'lucide-react';
 
 /**
- * AUTOPRIME ELITE STOREFRONT v4.6.4
+ * AUTOPRIME ELITE STOREFRONT v4.6.6
  * Features: Live DMS Sync, Currency Switcher, Google Drive Image Fix, 
  * Range Tag Extraction, Nationwide Delivery Logic.
+ * Optimized for platform compatibility.
  */
 
 // --- CONFIGURATION ---
@@ -73,7 +73,7 @@ const Card = ({ car, formatDisplayPrice, whatsappNumber }) => {
               <div key={i} className="w-full h-full flex-shrink-0 flex items-center justify-center p-4">
                  <img 
                   src={img} 
-                  alt={`${car.name} ${i}`} 
+                  alt={`${car.name} view ${i}`} 
                   className="max-w-full max-h-full object-contain drop-shadow-2xl transition-transform duration-700 group-hover:scale-105" 
                   onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=800'; }}
                 />
@@ -246,6 +246,11 @@ const App = () => {
     return `${symbols[currency]}${converted.toLocaleString()}`;
   };
 
+  const handleGlobalFinanceRequest = () => {
+    const message = "Hi AutoPrime, I'm interested in exploring car financing options.";
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
   const filteredCars = useMemo(() => {
     if (selectedFilter === 'All') return cars;
     return cars.filter(car => car.category === selectedFilter || car.power === selectedFilter || car.status === selectedFilter);
@@ -295,10 +300,20 @@ const App = () => {
         </div>
       </main>
 
+      {/* Strategic Credit Section */}
+      <section id="financing" className="max-w-6xl mx-auto px-6 mb-32">
+        <div className="bg-slate-950 rounded-[4rem] p-16 md:p-24 text-white text-center relative overflow-hidden">
+          <span className="bg-blue-600/30 text-blue-400 border border-blue-600/30 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest mb-10 inline-block">Strategic Acquisitions</span>
+          <h3 className="text-5xl md:text-7xl font-black mb-8 leading-tight tracking-tighter uppercase italic">Tailored <br/>Credit Solutions</h3>
+          <p className="text-slate-400 max-w-xl mx-auto mb-10 text-lg italic leading-relaxed">Speak with our private acquisition desk to discuss bespoke structured payment plans for elite inventory.</p>
+          <button onClick={handleGlobalFinanceRequest} className="bg-white text-slate-950 px-20 py-8 rounded-[3rem] font-black text-xl hover:scale-105 active:scale-95 transition-transform shadow-xl uppercase tracking-tighter">Initiate Consultation</button>
+        </div>
+      </section>
+
       {/* Footer Content */}
       <footer className="text-center py-20 border-t border-slate-200">
          <div className="flex justify-center gap-8 mb-6 text-slate-300"><Truck size={24} /><ShieldCheck size={24} /><TrendingUp size={24} /><Globe size={24} /><CreditCard size={24} /></div>
-         <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.5em] mb-2 px-6 text-center italic">AUTOPRIME NATIONWIDE DELIVERY • DMS V4.6.3</p>
+         <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.5em] mb-2 px-6 text-center italic">AUTOPRIME NATIONWIDE DELIVERY • DMS V4.6.6</p>
       </footer>
 
       {/* Sidebar Menu */}
