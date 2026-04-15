@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoPrime Admin</title>
+  <script>window.AUTOPRIME_API = window.AUTOPRIME_API || 'http://localhost:3001';</script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; }
+    .fade-in { animation: fadeIn .2s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  </style>
+</head>
+<body class="bg-gray-950 text-gray-100">
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useCallback } = React;
+const API = window.AUTOPRIME_API;
+
+// ── Auth helpers ──────────────────────────────────────────────────────────────
+const getToken = () => localStorage.getItem('ap_token');
+const saveToken = t => localStorage.setItem('ap_token', t);
+const dropToken = () => localStorage.removeItem('ap_token');
+const authHdr = () => ({ 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` });
+
+async function apiFetch(path, opts = {}) {
+  const res = await fetch(API + path, { headers: authHdr(), ...opts });
+  if (res.status === 401) { dropToken(); window.location.reload(); }
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+  return data;
+}
+
+// ── Reusable UI ───────────────────────────────────────────────────────────────
+function Btn({ children, onClick, variant = 'primary', size = 'md', disabled, type = 'button', className = '' }) {
+  const base = 'inline-flex items-center gap-1.5 rounded font-medium transition-colors disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed';
+  const sizes = { sm: 'px-2.5 py-1 text-xs', md: 'px-4 py-2 text-sm', lg: 'px-5 py-2.5 text-base' };
+  const variants = {
+    primary: 'bg-amber-500 hover:bg-amber-400 text-black',
+    danger:  'bg-red-600 hover:bg-red-500 text-white',
+    ghost:   'bg-white/5 hover:bg-white/10 text-gray-300',
+    outline: 'border border-gray-600 hover:border-gray-400 text-gray-300',
+  };
+  return <button type={type} onClick={onClick} disabled={disabled} className={`${base} ${sizes[size]} ${variants[variant]} ${className}`}>{children}</button>;
+}
+
+function Badge({ label, color }) {
+  const colors = { green: 'bg-green-900/50 text-green-300', red: 'bg-red-900/50 text-red-300', yellow: 'bg-yellow-900/50 text-yellow-300', gray: 'bg-gray-800 text-gray-400', blue: 'bg-blue-900/50 text-blue-300' };
+  return <span className={`px-2 py-0.5 rounded text-xs font-medium ${colors[color] || colors.gray}`}>{label}</span>;
+}
+
+function Input({ label, value, onChange, type = 'text', placeholder, required, rows }) {
+  const cls = 'w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-amber-500';
+  return (
+    <label className="block">
+      {label && <span className="block text-xs text-gray-400 mb-1">{label}</span>}
+      {rows
+        ? <textarea rows={rows} value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} className={cls} />
+        : <input type={type} value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} required={required} className={cls} />
+      }
+    </label>
+  );
+}
+
+function Select({ label, value, onChange, options }) {
+  return (
+    <label className="block">
+      {label && <span className="block text-xs text-gray-400 mb-1">{label}</span>}
+      <select value={value} onChange={e => onChange(e.target.value)} className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm text-gray-100 focus:outline-none focus:border-amber-500">
+        {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+      </select>
+    </label>
+  );
+}
+
+function Modal({ title, onClose, children }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={e => e.target === e.currentTarget && onClose()}>
+      <div className="bg-gray-900 rounded-lg w-full max-w-lg max-h-[90vh] overflow-y-auto fade-in">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-800">
+          <h2 className="font-semibold text-base">{title}</h2>
+          <button onClick={onClose} className="text-gray-500 hover:text-white text-lg leading-none">✕</button>
+        </div>
+        <div className="px-5 py-4">{children}</div>
+      </div>
+    </div>
+  );
+}
+
+function StatCard({ label, value, sub, accent }) {
+  return (
+    <div className="bg-gray-900 rounded-lg p-5 border border-gray-800">
+      <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">{label}</p>
+      <p className={`text-2xl font-bold ${accent || 'text-white'}`}>{value}</p>
+      {sub && <p className="text-xs text-gray-500 mt-1">{sub}</p>}
+    </div>
+  );
+}
+
+// ── Login ─────────────────────────────────────────────────────────────────────
+function LoginPage({ onLogin }) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setError(''); setLoading(true);
+    try {
+      const data = await fetch(`${API}/api/auth/login`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      }).then(r => r.json());
+      if (data.token) { saveToken(data.token); onLogin(data.token); }
+      else setError(data.error || 'Login failed');
+    } catch { setError('Cannot reach server — is the backend running?'); }
+    setLoading(false);
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-950 p-4">
+      <div className="w-full max-w-sm fade-in">
+        <div className="text-center mb-8">
+          <div className="text-2xl font-bold text-amber-400 mb-1">AutoPrime</div>
+          <p className="text-sm text-gray-500">Admin Panel</p>
+        </div>
+        <form onSubmit={handleSubmit} className="bg-gray-900 rounded-xl p-6 border border-gray-800 space-y-4">
+          <Input label="Username" value={username} onChange={setUsername} required placeholder="admin" />
+          <Input label="Password" type="password" value={password} onChange={setPassword} required placeholder="••••••••" />
+          {error && <p className="text-red-400 text-sm">{error}</p>}
+          <Btn type="submit" disabled={loading} className="w-full justify-center">{loading ? 'Signing in…' : 'Sign In'}</Btn>
+        </form>
+        <p className="text-center text-xs text-gray-600 mt-4">Backend: {API}</p>
+      </div>
+    </div>
+  );
+}
+
+// ── Sidebar ───────────────────────────────────────────────────────────────────
+const NAV = [
+  { id: 'dashboard',  label: 'Dashboard',  icon: '◈' },
+  { id: 'vehicles',   label: 'Vehicles',   icon: '🚗' },
+  { id: 'enquiries',  label: 'Enquiries',  icon: '📬' },
+  { id: 'settings',   label: 'Settings',   icon: '⚙' },
+];
+
+function Sidebar({ view, setView, onLogout, newEnquiries }) {
+  return (
+    <aside className="w-52 bg-gray-900 border-r border-gray-800 flex flex-col shrink-0">
+      <div className="px-5 py-5 border-b border-gray-800">
+        <div className="text-amber-400 font-bold text-lg leading-none">AutoPrime</div>
+        <div className="text-gray-600 text-xs mt-0.5">Admin</div>
+      </div>
+      <nav className="flex-1 py-3">
+        {NAV.map(n => (
+          <button key={n.id} onClick={() => setView(n.id)}
+            className={`w-full flex items-center gap-2.5 px-5 py-2.5 text-sm transition-colors ${view === n.id ? 'bg-amber-500/10 text-amber-400 border-r-2 border-amber-500' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>
+            <span>{n.icon}</span>
+            <span>{n.label}</span>
+            {n.id === 'enquiries' && newEnquiries > 0 && (
+              <span className="ml-auto bg-amber-500 text-black text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">{newEnquiries}</span>
+            )}
+          </button>
+        ))}
+      </nav>
+      <div className="p-3 border-t border-gray-800">
+        <button onClick={onLogout} className="w-full text-left px-3 py-2 text-xs text-gray-600 hover:text-red-400 transition-colors rounded">Sign out</button>
+      </div>
+    </aside>
+  );
+}
+
+// ── Dashboard ─────────────────────────────────────────────────────────────────
+function Dashboard() {
+  const [stats, setStats] = useState(null);
+  const [newEnq, setNewEnq] = useState(0);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    apiFetch('/api/vehicles/stats/summary').then(setStats).catch(e => setError(e.message));
+    apiFetch('/api/enquiries?limit=1').then(d => setNewEnq(d.newCount || 0)).catch(() => {});
+  }, []);
+
+  if (error) return <p className="text-red-400 text-sm">{error}</p>;
+  if (!stats) return <p className="text-gray-500 text-sm">Loading…</p>;
+
+  const fmt = n => n >= 1e6 ? `$${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(0)}K` : `$${n}`;
+
+  return (
+    <div className="fade-in space-y-6">
+      <h1 className="text-xl font-bold">Dashboard</h1>
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+        <StatCard label="Total Vehicles"  value={stats.total}     />
+        <StatCard label="Available"       value={stats.available} accent="text-green-400" />
+        <StatCard label="Sold"            value={stats.sold}      accent="text-red-400" />
+        <StatCard label="Inventory Value" value={fmt(stats.totalValue)} accent="text-amber-400" sub="available stock" />
+        <StatCard label="New"             value={stats.newCount}  />
+        <StatCard label="New Enquiries"   value={newEnq}          accent={newEnq > 0 ? 'text-amber-400' : ''} />
+      </div>
+    </div>
+  );
+}
+
+// ── Vehicles Page ─────────────────────────────────────────────────────────────
+const BLANK_V = { name:'', price:'', category:'Used', power_type:'Fuel', status:'Available', images:'', description:'', video_url:'' };
+const CATEGORIES = ['New','Used','Foreign Used','Local Used','Pre-Owned Low Mileage'].map(v=>({value:v,label:v}));
+const POWER_TYPES = ['Fuel','Electric','Hybrid','CNG'].map(v=>({value:v,label:v}));
+const STATUSES    = ['Available','Sold'].map(v=>({value:v,label:v}));
+
+function VehiclesPage() {
+  const [vehicles, setVehicles] = useState([]);
+  const [loading, setLoading]   = useState(true);
+  const [modal, setModal]       = useState(null); // null | 'add' | 'edit'
+  const [form, setForm]         = useState(BLANK_V);
+  const [editId, setEditId]     = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
+  const [saving, setSaving]     = useState(false);
+  const [importing, setImporting] = useState(false);
+  const [msg, setMsg]           = useState('');
+  const [err, setErr]           = useState('');
+
+  const load = useCallback(() => {
+    setLoading(true);
+    apiFetch('/api/vehicles').then(d => { setVehicles(d); setLoading(false); }).catch(e => { setErr(e.message); setLoading(false); });
+  }, []);
+
+  useEffect(load, [load]);
+
+  function openAdd() { setForm(BLANK_V); setEditId(null); setModal('add'); setErr(''); }
+  function openEdit(v) {
+    setForm({ ...v, images: Array.isArray(v.images) ? v.images.join('\n') : v.images, price: String(v.price) });
+    setEditId(v.id); setModal('edit'); setErr('');
+  }
+
+  async function saveVehicle(e) {
+    e.preventDefault(); setSaving(true); setErr('');
+    const body = { ...form, price: parseFloat(form.price) || 0, images: form.images.split('\n').map(s=>s.trim()).filter(Boolean) };
+    try {
+      if (modal === 'edit') await apiFetch(`/api/vehicles/${editId}`, { method:'PUT', body: JSON.stringify(body) });
+      else await apiFetch('/api/vehicles', { method:'POST', body: JSON.stringify(body) });
+      setModal(null); load(); setMsg('Saved.');
+    } catch(e) { setErr(e.message); }
+    setSaving(false);
+  }
+
+  async function deleteVehicle() {
+    setSaving(true);
+    try { await apiFetch(`/api/vehicles/${deleteId}`, { method:'DELETE' }); setDeleteId(null); load(); setMsg('Deleted.'); }
+    catch(e) { setErr(e.message); }
+    setSaving(false);
+  }
+
+  async function importSheet() {
+    setImporting(true); setErr(''); setMsg('');
+    try { const d = await apiFetch('/api/vehicles/import-sheet', { method:'POST' }); setMsg(d.message); load(); }
+    catch(e) { setErr(e.message); }
+    setImporting(false);
+  }
+
+  const statusColor = s => s === 'Available' ? 'green' : s === 'Sold' ? 'red' : 'gray';
+
+  return (
+    <div className="fade-in space-y-4">
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-bold">Vehicles</h1>
+        <div className="flex gap-2">
+          <Btn variant="ghost" size="sm" onClick={importSheet} disabled={importing}>{importing ? 'Importing…' : '↓ Import Sheet'}</Btn>
+          <Btn size="sm" onClick={openAdd}>+ Add Vehicle</Btn>
+        </div>
+      </div>
+      {msg && <p className="text-green-400 text-sm">{msg}</p>}
+      {err && <p className="text-red-400 text-sm">{err}</p>}
+      {loading ? <p className="text-gray-500 text-sm">Loading…</p> : (
+        <div className="bg-gray-900 rounded-lg border border-gray-800 overflow-hidden">
+          <table className="w-full text-sm">
+            <thead className="border-b border-gray-800 text-gray-500 text-xs uppercase">
+              <tr>{['Name','Price','Category','Power','Status',''].map(h=><th key={h} className="text-left px-4 py-3">{h}</th>)}</tr>
+            </thead>
+            <tbody>
+              {vehicles.length === 0 && <tr><td colSpan={6} className="px-4 py-8 text-center text-gray-600">No vehicles yet</td></tr>}
+              {vehicles.map(v => (
+                <tr key={v.id} className="border-t border-gray-800 hover:bg-gray-800/40">
+                  <td className="px-4 py-3 font-medium">{v.name}</td>
+                  <td className="px-4 py-3 text-gray-400">${Number(v.price).toLocaleString()}</td>
+                  <td className="px-4 py-3 text-gray-400">{v.category}</td>
+                  <td className="px-4 py-3 text-gray-400">{v.power_type}</td>
+                  <td className="px-4 py-3"><Badge label={v.status} color={statusColor(v.status)} /></td>
+                  <td className="px-4 py-3 text-right">
+                    <Btn variant="ghost" size="sm" onClick={() => openEdit(v)}>Edit</Btn>
+                    <Btn variant="danger" size="sm" onClick={() => setDeleteId(v.id)} className="ml-1">Del</Btn>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {modal && (
+        <Modal title={modal === 'edit' ? 'Edit Vehicle' : 'Add Vehicle'} onClose={() => setModal(null)}>
+          <form onSubmit={saveVehicle} className="space-y-3">
+            <Input label="Name *" value={form.name} onChange={v=>setForm(f=>({...f,name:v}))} required placeholder="2024 Mercedes S-Class" />
+            <div className="grid grid-cols-2 gap-3">
+              <Input label="Price (USD)" type="number" value={form.price} onChange={v=>setForm(f=>({...f,price:v}))} placeholder="85000" />
+              <Select label="Status" value={form.status} onChange={v=>setForm(f=>({...f,status:v}))} options={STATUSES} />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <Select label="Category" value={form.category} onChange={v=>setForm(f=>({...f,category:v}))} options={CATEGORIES} />
+              <Select label="Power Type" value={form.power_type} onChange={v=>setForm(f=>({...f,power_type:v}))} options={POWER_TYPES} />
+            </div>
+            <Input label="Image URLs (one per line)" value={form.images} onChange={v=>setForm(f=>({...f,images:v}))} rows={3} placeholder="https://..." />
+            <Input label="Description / Specs" value={form.description} onChange={v=>setForm(f=>({...f,description:v}))} rows={2} />
+            <Input label="Video URL (YouTube)" value={form.video_url} onChange={v=>setForm(f=>({...f,video_url:v}))} placeholder="https://youtube.com/..." />
+            {err && <p className="text-red-400 text-xs">{err}</p>}
+            <div className="flex gap-2 pt-1">
+              <Btn type="submit" disabled={saving}>{saving ? 'Saving…' : 'Save'}</Btn>
+              <Btn variant="ghost" onClick={() => setModal(null)}>Cancel</Btn>
+            </div>
+          </form>
+        </Modal>
+      )}
+
+      {deleteId && (
+        <Modal title="Delete Vehicle" onClose={() => setDeleteId(null)}>
+          <p className="text-gray-400 text-sm mb-4">This cannot be undone. Continue?</p>
+          <div className="flex gap-2">
+            <Btn variant="danger" onClick={deleteVehicle} disabled={saving}>Delete</Btn>
+            <Btn variant="ghost" onClick={() => setDeleteId(null)}>Cancel</Btn>
+          </div>
+        </Modal>
+      )}
+    </div>
+  );
+}
+
+// ── Enquiries Page ────────────────────────────────────────────────────────────
+function EnquiriesPage() {
+  const [enquiries, setEnquiries] = useState([]);
+  const [selected, setSelected]   = useState(null);
+  const [loading, setLoading]     = useState(true);
+  const [saving, setSaving]       = useState(false);
+  const [filter, setFilter]       = useState('');
+
+  const load = () => {
+    setLoading(true);
+    apiFetch('/api/enquiries?limit=200').then(d => { setEnquiries(d.enquiries || []); setLoading(false); }).catch(() => setLoading(false));
+  };
+  useEffect(load, []);
+
+  async function updateStatus(id, status) {
+    setSaving(true);
+    await apiFetch(`/api/enquiries/${id}`, { method:'PUT', body: JSON.stringify({ status }) }).catch(() => {});
+    load(); setSelected(null); setSaving(false);
+  }
+
+  const statusColor = s => s === 'new' ? 'amber' : s === 'in_progress' ? 'blue' : 'gray';
+  const filtered = filter ? enquiries.filter(e => e.status === filter) : enquiries;
+
+  return (
+    <div className="fade-in space-y-4">
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-bold">Enquiries</h1>
+        <select value={filter} onChange={e=>setFilter(e.target.value)} className="bg-gray-800 border border-gray-700 rounded px-3 py-1.5 text-sm text-gray-300 focus:outline-none">
+          <option value="">All</option>
+          <option value="new">New</option>
+          <option value="in_progress">In Progress</option>
+          <option value="closed">Closed</option>
+        </select>
+      </div>
+      {loading ? <p className="text-gray-500 text-sm">Loading…</p> : (
+        <div className="bg-gray-900 rounded-lg border border-gray-800 overflow-hidden">
+          <table className="w-full text-sm">
+            <thead className="border-b border-gray-800 text-gray-500 text-xs uppercase">
+              <tr>{['Type','Name / Details','Date','Status',''].map(h=><th key={h} className="text-left px-4 py-3">{h}</th>)}</tr>
+            </thead>
+            <tbody>
+              {filtered.length === 0 && <tr><td colSpan={5} className="px-4 py-8 text-center text-gray-600">No enquiries</td></tr>}
+              {filtered.map(e => (
+                <tr key={e.id} className="border-t border-gray-800 hover:bg-gray-800/40 cursor-pointer" onClick={() => setSelected(e)}>
+                  <td className="px-4 py-3 capitalize text-gray-400">{e.type}</td>
+                  <td className="px-4 py-3 font-medium">{e.name || e.vehicle_name || e.make || '—'}{e.model ? ` ${e.model}` : ''}</td>
+                  <td className="px-4 py-3 text-gray-500 text-xs">{new Date(e.created_at).toLocaleDateString()}</td>
+                  <td className="px-4 py-3"><Badge label={e.status} color={statusColor(e.status)} /></td>
+                  <td className="px-4 py-3 text-right text-gray-600">→</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {selected && (
+        <Modal title="Enquiry Detail" onClose={() => setSelected(null)}>
+          <dl className="space-y-2 text-sm">
+            {[['Type', selected.type], ['Name', selected.name], ['Phone', selected.phone], ['Email', selected.email],
+              ['Make', selected.make], ['Model', selected.model], ['Budget', selected.budget],
+              ['Vehicle', selected.vehicle_name], ['Message', selected.message],
+              ['Submitted', new Date(selected.created_at).toLocaleString()]
+            ].filter(([,v]) => v).map(([k,v]) => (
+              <div key={k} className="flex gap-3">
+                <dt className="text-gray-500 w-20 shrink-0">{k}</dt>
+                <dd className="text-gray-200 break-all">{v}</dd>
+              </div>
+            ))}
+          </dl>
+          <div className="flex gap-2 mt-4">
+            {selected.status !== 'in_progress' && <Btn size="sm" variant="ghost" onClick={() => updateStatus(selected.id,'in_progress')} disabled={saving}>Mark In Progress</Btn>}
+            {selected.status !== 'closed'      && <Btn size="sm" variant="ghost" onClick={() => updateStatus(selected.id,'closed')} disabled={saving}>Close</Btn>}
+            {selected.status !== 'new'         && <Btn size="sm" variant="ghost" onClick={() => updateStatus(selected.id,'new')} disabled={saving}>Reopen</Btn>}
+          </div>
+        </Modal>
+      )}
+    </div>
+  );
+}
+
+// ── Settings Page ─────────────────────────────────────────────────────────────
+function SettingsPage() {
+  const [form, setForm]   = useState({ exchange_rate:'', whatsapp_number:'', business_name:'', google_sheet_url:'', sheet_sync_enabled:'true' });
+  const [pw, setPw]       = useState({ current:'', next:'', confirm:'' });
+  const [msg, setMsg]     = useState('');
+  const [err, setErr]     = useState('');
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    apiFetch('/api/settings').then(d => setForm(f => ({ ...f, ...d }))).catch(() => {});
+  }, []);
+
+  async function saveSettings(e) {
+    e.preventDefault(); setSaving(true); setMsg(''); setErr('');
+    try { await apiFetch('/api/settings', { method:'PUT', body: JSON.stringify(form) }); setMsg('Settings saved.'); }
+    catch(e) { setErr(e.message); }
+    setSaving(false);
+  }
+
+  async function changePassword(e) {
+    e.preventDefault(); setErr(''); setMsg('');
+    if (pw.next !== pw.confirm) return setErr('New passwords do not match');
+    if (pw.next.length < 8) return setErr('New password must be at least 8 characters');
+    setSaving(true);
+    try { await apiFetch('/api/auth/change-password', { method:'POST', body: JSON.stringify({ currentPassword: pw.current, newPassword: pw.next }) }); setMsg('Password updated.'); setPw({ current:'', next:'', confirm:'' }); }
+    catch(e) { setErr(e.message); }
+    setSaving(false);
+  }
+
+  const f = (k, v) => setForm(p => ({ ...p, [k]: v }));
+
+  return (
+    <div className="fade-in space-y-6 max-w-lg">
+      <h1 className="text-xl font-bold">Settings</h1>
+      {msg && <p className="text-green-400 text-sm">{msg}</p>}
+      {err && <p className="text-red-400 text-sm">{err}</p>}
+
+      <form onSubmit={saveSettings} className="bg-gray-900 rounded-lg border border-gray-800 p-5 space-y-4">
+        <h2 className="text-sm font-semibold text-gray-300">Business Settings</h2>
+        <Input label="Business Name" value={form.business_name} onChange={v => f('business_name', v)} />
+        <div className="grid grid-cols-2 gap-3">
+          <Input label="NGN Exchange Rate" value={form.exchange_rate} onChange={v => f('exchange_rate', v)} placeholder="1600" />
+          <Input label="WhatsApp Number" value={form.whatsapp_number} onChange={v => f('whatsapp_number', v)} placeholder="+234..." />
+        </div>
+        <Input label="Google Sheet CSV URL" value={form.google_sheet_url} onChange={v => f('google_sheet_url', v)} placeholder="https://docs.google.com/..." />
+        <Select label="Sheet Auto-Sync" value={form.sheet_sync_enabled} onChange={v => f('sheet_sync_enabled', v)} options={[{value:'true',label:'Enabled'},{value:'false',label:'Disabled'}]} />
+        <Btn type="submit" disabled={saving}>{saving ? 'Saving…' : 'Save Settings'}</Btn>
+      </form>
+
+      <form onSubmit={changePassword} className="bg-gray-900 rounded-lg border border-gray-800 p-5 space-y-4">
+        <h2 className="text-sm font-semibold text-gray-300">Change Password</h2>
+        <Input label="Current Password" type="password" value={pw.current} onChange={v => setPw(p=>({...p,current:v}))} required />
+        <Input label="New Password" type="password" value={pw.next} onChange={v => setPw(p=>({...p,next:v}))} required />
+        <Input label="Confirm New Password" type="password" value={pw.confirm} onChange={v => setPw(p=>({...p,confirm:v}))} required />
+        <Btn type="submit" disabled={saving}>{saving ? 'Updating…' : 'Update Password'}</Btn>
+      </form>
+    </div>
+  );
+}
+
+// ── App (root) ────────────────────────────────────────────────────────────────
+function App() {
+  const [token, setTokenState] = useState(getToken());
+  const [view, setView]        = useState('dashboard');
+  const [newEnq, setNewEnq]    = useState(0);
+
+  useEffect(() => {
+    if (!token) return;
+    apiFetch('/api/enquiries?limit=1').then(d => setNewEnq(d.newCount || 0)).catch(() => {});
+    const iv = setInterval(() => {
+      apiFetch('/api/enquiries?limit=1').then(d => setNewEnq(d.newCount || 0)).catch(() => {});
+    }, 30000);
+    return () => clearInterval(iv);
+  }, [token]);
+
+  if (!token) return <LoginPage onLogin={t => { saveToken(t); setTokenState(t); }} />;
+
+  function logout() { dropToken(); setTokenState(null); }
+
+  return (
+    <div className="flex h-screen overflow-hidden">
+      <Sidebar view={view} setView={setView} onLogout={logout} newEnquiries={newEnq} />
+      <main className="flex-1 overflow-y-auto bg-gray-950 p-6">
+        {view === 'dashboard' && <Dashboard />}
+        {view === 'vehicles'  && <VehiclesPage />}
+        {view === 'enquiries' && <EnquiriesPage />}
+        {view === 'settings'  && <SettingsPage />}
+      </main>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
