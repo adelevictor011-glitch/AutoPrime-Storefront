@@ -1,0 +1,7 @@
+{
+  "name": "youni-cars",
+  "private": true,
+  "version": "1.0.0",
+  "engines": { "node": ">=18" },
+  "scripts": { "build": "node build.js" }
+}

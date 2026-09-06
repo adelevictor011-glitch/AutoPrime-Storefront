@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Youni Cars | Vehicle Sourcing & Nationwide Delivery</title>
+    <meta name="description" content="Youni Cars — sourcing, inspection and nationwide delivery of quality vehicles across Nigeria. A division of Made by Youni Ltd (RC 9411546).">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <meta name="theme-color" content="#0d0d0f">
+    <meta name="keywords" content="cars for sale Nigeria, buy car Lagos, foreign used cars Nigeria, nationwide car delivery, Youni Cars, electric cars Nigeria, car financing Nigeria">
+    <link rel="canonical" href="https://autoprimecars.vercel.app/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Youni Cars">
+    <meta property="og:title" content="Youni Cars | Buy Quality Cars in Nigeria — Nationwide Delivery">
+    <meta property="og:description" content="Sourcing, inspection and nationwide delivery of quality vehicles across Nigeria. New, foreign-used and local-used cars.">
+    <meta property="og:url" content="https://autoprimecars.vercel.app/">
+    <meta property="og:image" content="https://autoprimecars.vercel.app/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Youni Cars | Buy Quality Cars in Nigeria">
+    <meta name="twitter:description" content="Quality vehicles sourced, inspected and delivered nationwide across Nigeria.">
+    <meta name="twitter:image" content="https://autoprimecars.vercel.app/og-image.png">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "AutoDealer",
+      "name": "Youni Cars",
+      "description": "Sourcing, inspection and nationwide delivery of quality vehicles across Nigeria.",
+      "url": "https://autoprimecars.vercel.app/",
+      "telephone": "+2349122503132",
+      "areaServed": { "@type": "Country", "name": "Nigeria" },
+      "parentOrganization": { "@type": "Organization", "name": "Made by Youni Ltd", "identifier": "RC 9411546" },
+      "makesOffer": { "@type": "Offer", "itemOffered": { "@type": "Car" } },
+      "knowsAbout": ["New cars", "Foreign used cars", "Local used cars", "Electric vehicles", "Hybrid vehicles", "CNG vehicles", "Vehicle financing", "Nationwide car delivery Nigeria"]
+    }
+    </script>
+
+    <!-- Favicon: Y-stack mark, inlined so the build stays single-file -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.webmanifest">
+
+    <!-- TECH STACK (CDN) -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Tailwind compiled inline in the stylesheet below — no CDN, no runtime compile -->
+
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,700;1,9..144,900&family=DM+Sans:wght@400;500;700&display=swap');
+
+/* Youni Cars — precompiled utilities (no CDN). */
+*,::before,::after{box-sizing:border-box;border-width:0;border-style:solid;border-color:currentColor}
+html{line-height:1.5;-webkit-text-size-adjust:100%;font-family:'DM Sans',ui-sans-serif,system-ui,sans-serif}
+body{margin:0;line-height:inherit}
+h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit;margin:0}
+p,figure{margin:0}
+a{color:inherit;text-decoration:inherit}
+img,svg,video,canvas{display:block;vertical-align:middle}
+img,video{max-width:100%;height:auto}
+button,input,select,textarea{font-family:inherit;font-size:100%;font-weight:inherit;line-height:inherit;color:inherit;margin:0;padding:0}
+button,select{text-transform:none}
+button,[type=button],[type=submit]{-webkit-appearance:button;background-color:transparent;background-image:none;cursor:pointer}
+input,select,textarea{background-color:transparent}
+:disabled{cursor:default}
+ol,ul{list-style:none;margin:0;padding:0}
+:root{--tw-tx:0;--tw-ty:0;--tw-rot:0;--tw-skx:0;--tw-sx:1;--tw-sy:1}
+
+
+/* base */
+.-ml-0\.5{margin-left:0.125rem;}
+.-rotate-12{--tw-rot:-12deg;transform:translate(var(--tw-tx,0),var(--tw-ty,0)) rotate(var(--tw-rot,0)) skewX(var(--tw-skx,0)) scaleX(var(--tw-sx,1)) scaleY(var(--tw-sy,1));}
+.-translate-x-1\/2{--tw-tx:-50%;transform:translate(var(--tw-tx,0),var(--tw-ty,0)) rotate(var(--tw-rot,0)) skewX(var(--tw-skx,0)) scaleX(var(--tw-sx,1)) scaleY(var(--tw-sy,1));}
+.-translate-y-1\/2{--tw-ty:-50%;transform:translate(var(--tw-tx,0),var(--tw-ty,0)) rotate(var(--tw-rot,0)) skewX(var(--tw-skx,0)) scaleX(var(--tw-sx,1)) scaleY(var(--tw-sy,1));}
+.absolute{position:absolute;}
+.active\:scale-90:active{--tw-sx:0.9;--tw-sy:0.9;transform:translate(var(--tw-tx,0),var(--tw-ty,0)) rotate(var(--tw-rot,0)) skewX(var(--tw-skx,0)) scaleX(var(--tw-sx,1)) scaleY(var(--tw-sy,1));}
+.active\:scale-95:active{--tw-sx:0.95;--tw-sy:0.95;transform:translate(var(--tw-tx,0),var(--tw-ty,0)) rotate(var(--tw-rot,0)) skewX(var(--tw-skx,0)) scaleX(var(--tw-sx,1)) scaleY(var(--tw-sy,1));}
+.backdrop-blur{-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);}
+.backdrop-blur-2xl{-webkit-backdrop-filter:blur(40px);backdrop-filter:blur(40px);}
+.backdrop-blur-md{-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);}
+.bg-\[\#fcfcfc\]{background-color:#fcfcfc;}
+.bg-amber{background-color:rgb(245 166 35);}
+.bg-black{background-color:rgb(0 0 0);}
+.bg-ink{background-color:rgb(13 13 15);}
+.bg-paper{background-color:rgb(246 245 242);}
+.bg-red-600{background-color:rgb(220 38 38);}
+.bg-slate-100{background-color:rgb(241 245 249);}
+.bg-slate-200{background-color:rgb(226 232 240);}
+.bg-slate-300{background-color:rgb(203 213 225);}
+.bg-slate-50{background-color:rgb(248 250 252);}
+.bg-slate-50\/50{background-color:rgba(248,250,252,0.5);}
+.bg-slate-900{background-color:rgb(15 23 42);}
+.bg-slate-950\/85{background-color:rgba(2,6,23,0.85);}
+.bg-slate-950\/98{background-color:rgba(2,6,23,0.98);}
+.bg-white{background-color:rgb(255 255 255);}
+.bg-white\/20{background-color:rgba(255,255,255,0.2);}
+.bg-white\/60{background-color:rgba(255,255,255,0.6);}
+.bg-white\/95{background-color:rgba(255,255,255,0.95);}
+.border{border-width:1px;}
+.border-4{border-width:4px;}
+.border-b{border-bottom-width:1px;}
+.border-slate-100{border-color:rgb(241 245 249);}
+.border-slate-50{border-color:rgb(248 250 252);}
+.border-t{border-top-width:1px;}
+.border-white{border-color:rgb(255 255 255);}
+.border-white\/10{border-color:rgba(255,255,255,0.1);}
+.border-white\/70{border-color:rgba(255,255,255,0.7);}
+.bottom-0{bottom:0px;}
+.bottom-4{bottom:1rem;}
+.cursor-grab{cursor:grab;}
+.cursor-grabbing{cursor:grabbing;}
+.disabled\:opacity-0:disabled{opacity:0.0;}
+.disabled\:pointer-events-none:disabled{pointer-events:none;}
+.drop-shadow-2xl{filter:drop-shadow(0 25px 25px rgb(0 0 0 / 0.15));}
+.duration-300{transition-duration:300ms;}
+.duration-700{transition-duration:700ms;}
+.fill-current{fill:currentColor;}
+.fixed{position:fixed;}
+.flex{display:flex;}
+.flex-col{flex-direction:column;}
+.flex-grow{flex-grow:1;}
+.flex-wrap{flex-wrap:wrap;}
+.focus\:ring-4:focus{box-shadow:0 0 0 4px var(--tw-ring-color,rgba(245,166,35,.5));}
+.font-black{font-weight:900;}
+.font-bold{font-weight:700;}
+.font-medium{font-weight:500;}
+.gap-1{gap:0.25rem;}
+.gap-1\.5{gap:0.375rem;}
+.gap-2{gap:0.5rem;}
+.gap-2\.5{gap:0.625rem;}
+.gap-3{gap:0.75rem;}
+.gap-4{gap:1rem;}
+.gap-8{gap:2rem;}
+.grid{display:grid;}
+.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr));}
+.group:hover .group-hover\:scale-105{--tw-sx:1.05;--tw-sy:1.05;transform:translate(var(--tw-tx,0),var(--tw-ty,0)) rotate(var(--tw-rot,0)) skewX(var(--tw-skx,0)) scaleX(var(--tw-sx,1)) scaleY(var(--tw-sy,1));}
+.h-1{height:0.25rem;}
+.h-1\.5{height:0.375rem;}
+.h-14{height:3.5rem;}
+.h-16{height:4rem;}
+.h-2{height:0.5rem;}
+.h-3{height:0.75rem;}
+.h-3\.5{height:0.875rem;}
+.h-4{height:1rem;}
+.h-5{height:1.25rem;}
+.h-60{height:15rem;}
+.h-64{height:16rem;}
+.h-7{height:1.75rem;}
+.h-8{height:2rem;}
+.h-9{height:2.25rem;}
+.h-full{height:100%;}
+.hidden{display:none;}
+.hover\:bg-amber:hover{background-color:rgb(245 166 35);}
+.hover\:bg-ink:hover{background-color:rgb(13 13 15);}
+.hover\:bg-slate-400:hover{background-color:rgb(148 163 184);}
+.hover\:bg-white\/40:hover{background-color:rgba(255,255,255,0.4);}
+.hover\:bg-white\/90:hover{background-color:rgba(255,255,255,0.9);}
+.hover\:shadow-blue-200\/40:hover{box-shadow:0 12px 28px -6px rgba(247,212,146,0.4);}
+.hover\:text-blue-600:hover{color:rgb(245 166 35);}
+.hover\:text-ink:hover{color:rgb(13 13 15);}
+.hover\:text-white:hover{color:rgb(255 255 255);}
+.inset-0{top:0px;right:0px;bottom:0px;left:0px;}
+.italic{font-style:italic;}
+.items-center{align-items:center;}
+.items-start{align-items:flex-start;}
+.justify-around{justify-content:space-around;}
+.justify-between{justify-content:space-between;}
+.justify-center{justify-content:center;}
+.leading-\[0\.9\]{line-height:0.9;}
+.leading-\[0\.9\]">Flexible{line-height:0.9]">Flexibl;}
+.leading-relaxed{line-height:1.625;}
+.leading-tight{line-height:1.25;}
+.left-0{left:0px;}
+.left-1\/2{left:50%;}
+.left-2\.5{left:0.625rem;}
+.left-5{left:1.25rem;}
+.left-6{left:1.5rem;}
+.max-h-full{max-height:100%;}
+.max-w-2xl{max-width:42rem;}
+.max-w-5xl{max-width:64rem;}
+.max-w-full{max-width:100%;}
+.max-w-lg{max-width:32rem;}
+.mb-1{margin-bottom:0.25rem;}
+.mb-10{margin-bottom:2.5rem;}
+.mb-12{margin-bottom:3rem;}
+.mb-2{margin-bottom:0.5rem;}
+.mb-4{margin-bottom:1rem;}
+.mb-5{margin-bottom:1.25rem;}
+.mb-6{margin-bottom:1.5rem;}
+.mb-8{margin-bottom:2rem;}
+.min-w-full{min-width:100%;}
+.ml-0\.5{margin-left:0.125rem;}
+.mt-24{margin-top:6rem;}
+.mt-4{margin-top:1rem;}
+.mt-auto{margin-top:auto;}
+.mx-auto{margin-left:auto;margin-right:auto;}
+.object-contain{object-fit:contain;}
+.opacity-\[0\.03\]{opacity:0.03;}
+.outline-none{outline:2px solid transparent;outline-offset:2px;}
+.overflow-hidden{overflow:hidden;}
+.p-1{padding:0.25rem;}
+.p-10{padding:2.5rem;}
+.p-12{padding:3rem;}
+.p-2{padding:0.5rem;}
+.p-3{padding:0.75rem;}
+.p-4{padding:1rem;}
+.p-5{padding:1.25rem;}
+.p-6{padding:1.5rem;}
+.p-8{padding:2rem;}
+.pb-16{padding-bottom:4rem;}
+.pb-20{padding-bottom:5rem;}
+.pl-14{padding-left:3.5rem;}
+.pointer-events-none{pointer-events:none;}
+.pr-5{padding-right:1.25rem;}
+.pt-16{padding-top:4rem;}
+.pt-6{padding-top:1.5rem;}
+.px-3{padding-left:0.75rem;padding-right:0.75rem;}
+.px-4{padding-left:1rem;padding-right:1rem;}
+.px-5{padding-left:1.25rem;padding-right:1.25rem;}
+.px-6{padding-left:1.5rem;padding-right:1.5rem;}
+.py-1{padding-top:0.25rem;padding-bottom:0.25rem;}
+.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem;}
+.py-2{padding-top:0.5rem;padding-bottom:0.5rem;}
+.py-3{padding-top:0.75rem;padding-bottom:0.75rem;}
+.py-3\.5{padding-top:0.875rem;padding-bottom:0.875rem;}
+.py-4{padding-top:1rem;padding-bottom:1rem;}
+.py-5{padding-top:1.25rem;padding-bottom:1.25rem;}
+.relative{position:relative;}
+.right-0{right:0px;}
+.right-2\.5{right:0.625rem;}
+.right-4{right:1rem;}
+.right-6{right:1.5rem;}
+.ring-blue-50{--tw-ring-color:rgb(253 244 227);}
+.rounded-2xl{border-radius:1rem;}
+.rounded-\[0\.6rem\]{border-radius:0.6rem;}
+.rounded-\[0\.8rem\]{border-radius:0.8rem;}
+.rounded-\[1\.2rem\]{border-radius:1.2rem;}
+.rounded-\[2\.5rem\]{border-radius:2.5rem;}
+.rounded-\[2rem\]{border-radius:2rem;}
+.rounded-\[3rem\]{border-radius:3rem;}
+.rounded-full{border-radius:9999px;}
+.rounded-xl{border-radius:0.75rem;}
+.select-none{-webkit-user-select:none;user-select:none;}
+.selection\:bg-amber::selection{background-color:rgb(245 166 35);}
+.selection\:bg-blue-100::selection{background-color:rgb(251 231 196);}
+.shadow{box-shadow:0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);}
+.shadow-2xl{box-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);}
+.shadow-amber\/30{box-shadow:0 12px 28px -6px rgba(245,166,35,0.3);}
+.shadow-lg{box-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);}
+.shadow-sm{box-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);}
+.shadow-xl{box-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);}
+.text-2xl{font-size:1.5rem;line-height:2rem;}
+.text-3xl{font-size:1.875rem;line-height:2.25rem;}
+.text-4xl{font-size:2.25rem;line-height:2.5rem;}
+.text-5xl{font-size:3rem;line-height:1;}
+.text-\[10px\]{font-size:10px;}
+.text-\[8px\]{font-size:8px;}
+.text-\[9px\]{font-size:9px;}
+.text-amber{color:rgb(245 166 35);}
+.text-blue-600{color:rgb(245 166 35);}
+.text-center{text-align:center;}
+.text-ink{color:rgb(13 13 15);}
+.text-lg{font-size:1.125rem;line-height:1.75rem;}
+.text-slate-300{color:rgb(203 213 225);}
+.text-slate-400{color:rgb(148 163 184);}
+.text-slate-500{color:rgb(100 116 139);}
+.text-slate-900{color:rgb(15 23 42);}
+.text-sm{font-size:0.875rem;line-height:1.25rem;}
+.text-white{color:rgb(255 255 255);}
+.text-xl{font-size:1.25rem;line-height:1.75rem;}
+.top-0{top:0px;}
+.top-1\/2{top:50%;}
+.top-4{top:1rem;}
+.top-6{top:1.5rem;}
+.tracking-\[0\.2em\]{letter-spacing:0.2em;}
+.tracking-\[0\.3em\]{letter-spacing:0.3em;}
+.tracking-\[0\.4em\]{letter-spacing:0.4em;}
+.tracking-\[0\.5em\]{letter-spacing:0.5em;}
+.tracking-tight{letter-spacing:-0.025em;}
+.tracking-tighter{letter-spacing:-0.05em;}
+.tracking-wider{letter-spacing:0.05em;}
+.tracking-widest{letter-spacing:0.1em;}
+.transform{transform:translate(var(--tw-tx,0),var(--tw-ty,0)) rotate(var(--tw-rot,0)) skewX(var(--tw-skx,0)) scaleX(var(--tw-sx,1)) scaleY(var(--tw-sy,1));}
+.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4,0,0.2,1);transition-duration:.15s;}
+.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(0.4,0,0.2,1);transition-duration:.15s;}
+.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(0.4,0,0.2,1);transition-duration:.15s;}
+.uppercase{text-transform:uppercase;}
+.w-1{width:0.25rem;}
+.w-1\.5{width:0.375rem;}
+.w-16{width:4rem;}
+.w-3{width:0.75rem;}
+.w-3\.5{width:0.875rem;}
+.w-4{width:1rem;}
+.w-5{width:1.25rem;}
+.w-6{width:1.5rem;}
+.w-9{width:2.25rem;}
+.w-full{width:100%;}
+.will-change-transform{will-change:transform;}
+.z-10{z-index:10;}
+.z-20{z-index:20;}
+.z-30{z-index:30;}
+.z-40{z-index:40;}
+.z-50{z-index:50;}
+.z-\[100\]{z-index:100;}
+
+@media (min-width:768px){
+.md\:border-8{border-width:8px;}
+.md\:flex{display:flex;}
+.md\:gap-2{gap:0.5rem;}
+.md\:gap-3{gap:0.75rem;}
+.md\:gap-4{gap:1rem;}
+.md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr));}
+.md\:h-10{height:2.5rem;}
+.md\:h-16{height:4rem;}
+.md\:h-24{height:6rem;}
+.md\:h-3{height:0.75rem;}
+.md\:h-3\.5{height:0.875rem;}
+.md\:h-4{height:1rem;}
+.md\:h-5{height:1.25rem;}
+.md\:h-6{height:1.5rem;}
+.md\:h-72{height:18rem;}
+.md\:h-96{height:24rem;}
+.md\:hidden{display:none;}
+.md\:leading-\[0\.85\]{line-height:0.85;}
+.md\:left-3{left:0.75rem;}
+.md\:left-8{left:2rem;}
+.md\:mb-10{margin-bottom:2.5rem;}
+.md\:mb-12{margin-bottom:3rem;}
+.md\:mb-16{margin-bottom:4rem;}
+.md\:mb-6{margin-bottom:1.5rem;}
+.md\:mb-8{margin-bottom:2rem;}
+.md\:p-1\.5{padding:0.375rem;}
+.md\:p-10{padding:2.5rem;}
+.md\:p-16{padding:4rem;}
+.md\:p-24{padding:6rem;}
+.md\:p-3{padding:0.75rem;}
+.md\:p-32{padding:8rem;}
+.md\:p-4{padding:1rem;}
+.md\:p-6{padding:1.5rem;}
+.md\:p-7{padding:1.75rem;}
+.md\:pb-0{padding-bottom:0px;}
+.md\:pb-24{padding-bottom:6rem;}
+.md\:pt-32{padding-top:8rem;}
+.md\:pt-8{padding-top:2rem;}
+.md\:px-10{padding-left:2.5rem;padding-right:2.5rem;}
+.md\:px-4{padding-left:1rem;padding-right:1rem;}
+.md\:px-5{padding-left:1.25rem;padding-right:1.25rem;}
+.md\:px-6{padding-left:1.5rem;padding-right:1.5rem;}
+.md\:px-7{padding-left:1.75rem;padding-right:1.75rem;}
+.md\:px-8{padding-left:2rem;padding-right:2rem;}
+.md\:py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem;}
+.md\:py-2{padding-top:0.5rem;padding-bottom:0.5rem;}
+.md\:py-2\.5{padding-top:0.625rem;padding-bottom:0.625rem;}
+.md\:py-4{padding-top:1rem;padding-bottom:1rem;}
+.md\:py-5{padding-top:1.25rem;padding-bottom:1.25rem;}
+.md\:py-6{padding-top:1.5rem;padding-bottom:1.5rem;}
+.md\:py-8{padding-top:2rem;padding-bottom:2rem;}
+.md\:right-3{right:0.75rem;}
+.md\:right-6{right:1.5rem;}
+.md\:right-8{right:2rem;}
+.md\:rounded-2xl{border-radius:1rem;}
+.md\:rounded-3xl{border-radius:1.5rem;}
+.md\:rounded-\[0\.7rem\]{border-radius:0.7rem;}
+.md\:rounded-\[1\.5rem\]{border-radius:1.5rem;}
+.md\:rounded-\[2\.5rem\]{border-radius:2.5rem;}
+.md\:rounded-\[2rem\]{border-radius:2rem;}
+.md\:rounded-\[3\.5rem\]{border-radius:3.5rem;}
+.md\:rounded-\[4\.5rem\]{border-radius:4.5rem;}
+.md\:text-2xl{font-size:1.5rem;line-height:2rem;}
+.md\:text-3xl{font-size:1.875rem;line-height:2.25rem;}
+.md\:text-5xl{font-size:3rem;line-height:1;}
+.md\:text-8xl{font-size:6rem;line-height:1;}
+.md\:text-\[10px\]{font-size:10px;}
+.md\:text-\[11px\]{font-size:11px;}
+.md\:text-\[12px\]{font-size:12px;}
+.md\:text-base{font-size:1rem;line-height:1.5rem;}
+.md\:text-lg{font-size:1.125rem;line-height:1.75rem;}
+.md\:text-sm{font-size:0.875rem;line-height:1.25rem;}
+.md\:text-xl{font-size:1.25rem;line-height:1.75rem;}
+.md\:text-xs{font-size:0.75rem;line-height:1rem;}
+.md\:top-6{top:1.5rem;}
+.md\:top-8{top:2rem;}
+.md\:tracking-\[0\.3em\]{letter-spacing:0.3em;}
+.md\:tracking-\[0\.5em\]{letter-spacing:0.5em;}
+.md\:tracking-\[0\.6em\]{letter-spacing:0.6em;}
+.md\:w-10{width:2.5rem;}
+.md\:w-16{width:4rem;}
+.md\:w-24{width:6rem;}
+.md\:w-3\.5{width:0.875rem;}
+.md\:w-4{width:1rem;}
+.md\:w-5{width:1.25rem;}
+.md\:w-6{width:1.5rem;}
+.md\:w-7{width:1.75rem;}
+.md\:w-9{width:2.25rem;}
+.md\:w-96{width:24rem;}
+}
+
+@media (min-width:1024px){
+.lg\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr));}
+.lg\:text-9xl{font-size:8rem;line-height:1;}
+}
+
+@media (min-width:480px){
+.xs\:block{display:block;}
+.xs\:flex-row{flex-direction:row;}
+.xs\:items-end{align-items:flex-end;}
+.xs\:w-auto{width:auto;}
+}
+
+/* ---- component styles ---- */
+body { font-family: 'DM Sans', sans-serif; scroll-behavior: smooth; }
+.font-display { font-family: 'Fraunces', serif; }
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+.sold-stencil { text-shadow: 0 0 20px rgba(220, 38, 38, 0.5); }
+.glass-nav { background: rgba(255, 255, 255, 0.9); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); }
+.line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; }
+.video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 1.5rem; }
+@keyframes pulse-soft {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 166, 35, 0.45); }
+    70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(245, 166, 35, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 166, 35, 0); }
+}
+.pulse-engine { animation: pulse-soft 2s infinite; }
+.animate-fade-in { animation: fadeIn 0.3s ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.mobile-tab-active { color: #f5a623; }
+.mobile-tab-active::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; background: #f5a623; border-radius: 50%; }
+    </style>
+    <!--YC:ITEMLIST-->
+</head>
+<body class="bg-paper selection:bg-blue-100 text-slate-900 pb-20 md:pb-0">
+    <div id="root"><!--YC:CARDS--></div>
+    <noscript>
+      <div style="max-width:640px;margin:40px auto;padding:24px;font-family:sans-serif;line-height:1.6">
+        <h1>Youni Cars — Quality Cars in Nigeria, Delivered Nationwide</h1>
+        <p>Youni Cars sources, inspects and delivers quality vehicles across Nigeria — new, foreign-used and local-used cars, including electric, hybrid and CNG options. A division of Made by Youni Ltd (RC 9411546).</p>
+        <p>Please enable JavaScript to browse live inventory, or reach us on WhatsApp at +234 912 250 3132.</p>
+      </div>
+    </noscript>
+
+    <!--YC:INITIAL-->
+    <script type="text/babel">
+        const { useState, useEffect, useMemo, useCallback, useRef } = React;
+
+        // --- CONFIGURATION ---
+        const BRAND = "Youni Cars";
+        const WHATSAPP_NUMBER = "2349122503132"; // unchanged — swap if MBY uses a different sales line
+        const BACKEND_API = window.YOUNICARS_API || window.MADEBYYOUNI_API || window.AUTOPRIME_API || 'http://localhost:3001';
+        const GOOGLE_SHEET_CSV_URL ="https://docs.google.com/spreadsheets/d/e/2PACX-1vT0qeDSTiJkeT9UkU0XvKaoSRpjT6wxCDNeRaiXonPBvpUUo176DlEIxk_qYBDF_2v5Qu4XLim5w3ia/pub?gid=0&single=true&output=csv"; 
+
+        // --- ICONS (UI/UX Optimized) ---
+        const Icon = ({ name, className = "" }) => {
+            const paths = {
+                car: "M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2",
+                truck: "M10 17H5a2 2 0 1 1 0-4h14a2 2 0 1 1 0 4h-4",
+                zap: "M13 2L3 14h9l-1 8 10-12h-9l1-8z",
+                credit: "M3 10h18M7 15h.01M11 15h.01M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6z",
+                search: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z",
+                play: "M5 3l14 9-14 9V3z",
+                info: "M12 16v-4m0-4h.01M22 12A10 10 0 1112 2a10 10 0 0110 12z",
+                x: "M18 6L6 18M6 6l12 12",
+                shield: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",
+                menu: "M4 6h16M4 12h16M4 18h16",
+                chevronLeft: "M15 18l-6-6 6-6",
+                chevronRight: "M9 18l6-6-6-6"
+            };
+            return (
+                <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d={paths[name] || ""} />
+                    {name === 'car' && <><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></>}
+                </svg>
+            );
+        };
+
+        // --- BRAND MARK (Y-stack) ---
+        const YMark = ({ className = "w-9 h-9", dark = true }) => (
+            <svg className={className} viewBox="0 0 120 120" fill="none" aria-label="Youni Cars">
+                {dark && <rect x="4" y="4" width="112" height="112" rx="24" fill="#0d0d0f"/>}
+                <path d="M40 20 L46 42 A14 14 0 0 0 74 42 L80 20" stroke={dark ? "#fff" : "#0d0d0f"} strokeWidth="10" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M47 69 C47 62,54 62,60 69 C66 76,73 76,73 69 C73 62,66 62,60 69 C54 76,47 76,47 69 Z" stroke="#f5a623" strokeWidth="7" strokeLinejoin="round"/>
+                <path d="M60 82 V99" stroke={dark ? "#fff" : "#0d0d0f"} strokeWidth="10" strokeLinecap="round"/>
+            </svg>
+        );
+
+        // --- VIDEO MODAL ---
+        const VideoModal = ({ url, onClose }) => {
+            const getEmbedUrl = (link) => {
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                const match = link.match(regExp);
+                return (match && match[2].length === 11) ? `https://www.youtube.com/embed/${match[2]}?autoplay=1&modestbranding=1` : null;
+            };
+            const embed = getEmbedUrl(url);
+            if (!embed) return null;
+
+            return (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10">
+                    <div className="absolute inset-0 bg-slate-950/98 backdrop-blur-2xl" onClick={onClose}></div>
+                    <div className="relative w-full max-w-5xl bg-black rounded-[2rem] md:rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10">
+                        <button onClick={onClose} className="absolute top-4 right-4 md:top-6 md:right-6 z-10 bg-white/20 text-white p-2 md:p-3 rounded-full hover:bg-white/40 transition-all backdrop-blur-md">
+                            <Icon name="x" className="w-5 h-5 md:w-6 md:h-6"/>
+                        </button>
+                        <div className="video-container bg-black">
+                            <iframe src={embed} title="Engine Start Experience" allow="autoplay; encrypted-media" allowFullScreen></iframe>
+                        </div>
+                        <div className="bg-slate-900 p-4 md:p-6 text-center">
+                            <p className="text-white font-black uppercase text-[8px] md:text-[10px] tracking-[0.4em]">Engine Start Experience · Youni Cars</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- COMPONENT: IMAGE GALLERY (fluid swipe + floating nav) ---
+        const GALLERY_FALLBACK = 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800';
+        const Gallery = ({ images, alt = '', disabled = false }) => {
+            const imgs = (images && images.length) ? images : [GALLERY_FALLBACK];
+            const count = imgs.length;
+            const [index, setIndex] = useState(0);
+            const [dragging, setDragging] = useState(false);
+            const wrapRef = useRef(null);
+            const trackRef = useRef(null);
+            const drag = useRef(null);
+
+            const EASE = 'transform 460ms cubic-bezier(0.22, 1, 0.36, 1)';
+            const width = () => (wrapRef.current ? wrapRef.current.clientWidth : 0);
+
+            const applyTransform = (px, animate) => {
+                const el = trackRef.current;
+                if (!el) return;
+                el.style.transition = animate ? EASE : 'none';
+                el.style.transform = `translate3d(${px}px, 0, 0)`;
+            };
+            const settle = (i, animate = true) => applyTransform(-i * width(), animate);
+
+            // glide to the resting position whenever the index changes
+            useEffect(() => { settle(index, true); }, [index]);
+            // keep the track aligned if the card resizes / orientation flips
+            useEffect(() => {
+                const onResize = () => settle(index, false);
+                window.addEventListener('resize', onResize);
+                return () => window.removeEventListener('resize', onResize);
+            }, [index]);
+
+            const go = (i) => setIndex(Math.max(0, Math.min(count - 1, i)));
+
+            const onDown = (e) => {
+                if (disabled || count < 2) return;
+                const w = width();
+                try { wrapRef.current.setPointerCapture(e.pointerId); } catch (err) {}
+                drag.current = {
+                    id: e.pointerId, x0: e.clientX, y0: e.clientY,
+                    base: -index * w, w, axis: null, dx: 0,
+                    lastX: e.clientX, lastT: performance.now(), vx: 0,
+                };
+            };
+            const onMove = (e) => {
+                const d = drag.current;
+                if (!d || e.pointerId !== d.id) return;
+                const dx = e.clientX - d.x0;
+                const dy = e.clientY - d.y0;
+                // decide gesture axis once, so vertical scroll still works
+                if (!d.axis) {
+                    if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+                    d.axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+                    if (d.axis === 'x') setDragging(true);
+                }
+                if (d.axis === 'y') return; // let the browser pan vertically (touch-action: pan-y)
+                const now = performance.now();
+                const dt = now - d.lastT;
+                if (dt > 0) d.vx = (e.clientX - d.lastX) / dt; // px per ms
+                d.lastX = e.clientX; d.lastT = now;
+                // rubber-band resistance past the first / last frame
+                let move = dx;
+                const overStart = index === 0 && dx > 0;
+                const overEnd = index === count - 1 && dx < 0;
+                if (overStart || overEnd) move = dx * 0.32;
+                d.dx = move;
+                applyTransform(d.base + move, false);
+            };
+            const onUp = (e) => {
+                const d = drag.current;
+                if (!d || e.pointerId !== d.id) return;
+                drag.current = null;
+                setDragging(false);
+                if (d.axis !== 'x') { settle(index, true); return; }
+                const w = d.w || width();
+                const dist = d.dx || 0;
+                const flick = Math.abs(d.vx) > 0.35;        // quick flick, any distance
+                const past = Math.abs(dist) > w * 0.16;      // dragged far enough
+                let ni = index;
+                if (dist < 0 && (past || (flick && d.vx < 0))) ni = index + 1;
+                else if (dist > 0 && (past || (flick && d.vx > 0))) ni = index - 1;
+                ni = Math.max(0, Math.min(count - 1, ni));
+                if (ni === index) settle(index, true); // snap back
+                else setIndex(ni);                      // effect glides to new frame
+            };
+
+            const navBtn = "absolute top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center bg-white/60 hover:bg-white/90 backdrop-blur-md border border-white/70 shadow-lg text-ink transition-all duration-300 active:scale-90 disabled:opacity-0 disabled:pointer-events-none";
+
+            return (
+                <div className="absolute inset-0 select-none">
+                    <div
+                        ref={wrapRef}
+                        className={`absolute inset-0 overflow-hidden ${count > 1 && !disabled ? (dragging ? 'cursor-grabbing' : 'cursor-grab') : ''}`}
+                        style={{ touchAction: 'pan-y' }}
+                        onPointerDown={onDown}
+                        onPointerMove={onMove}
+                        onPointerUp={onUp}
+                        onPointerCancel={onUp}
+                    >
+                        <div ref={trackRef} className="flex h-full will-change-transform" style={{ transform: 'translate3d(0,0,0)' }}>
+                            {imgs.map((src, i) => (
+                                <div key={i} className="min-w-full h-full flex items-center justify-center p-6">
+                                    <img
+                                        src={src}
+                                        alt={`${alt} — photo ${i + 1}`}
+                                        draggable="false"
+                                        loading={i === 0 ? 'eager' : 'lazy'}
+                                        onError={(ev) => { if (ev.target.src !== GALLERY_FALLBACK) ev.target.src = GALLERY_FALLBACK; }}
+                                        className="max-w-full max-h-full object-contain drop-shadow-2xl pointer-events-none transition-transform duration-700 group-hover:scale-105"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {count > 1 && !disabled && (
+                        <>
+                            <button onClick={() => go(index - 1)} disabled={index === 0} aria-label="Previous photo" className={`${navBtn} left-2.5 md:left-3`}>
+                                <Icon name="chevronLeft" className="w-4 h-4 md:w-5 md:h-5 -ml-0.5" />
+                            </button>
+                            <button onClick={() => go(index + 1)} disabled={index === count - 1} aria-label="Next photo" className={`${navBtn} right-2.5 md:right-3`}>
+                                <Icon name="chevronRight" className="w-4 h-4 md:w-5 md:h-5 ml-0.5" />
+                            </button>
+
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
+                                {imgs.map((_, i) => (
+                                    <button
+                                        key={i}
+                                        onClick={() => go(i)}
+                                        aria-label={`Go to photo ${i + 1}`}
+                                        className={`h-1.5 rounded-full transition-all duration-300 ${i === index ? 'bg-amber w-6 md:w-7 shadow' : 'bg-slate-300 w-1.5 hover:bg-slate-400'}`}
+                                    />
+                                ))}
+                            </div>
+                        </>
+                    )}
+                </div>
+            );
+        };
+
+        // --- COMPONENT: VEHICLE CARD ---
+        const Card = ({ car, formatPrice }) => {
+            const [showSpecs, setShowSpecs] = useState(false);
+            const [activeVideo, setActiveVideo] = useState(null);
+
+            const handleEnquiry = () => {
+                const msg = `Hi Youni Cars — I'm interested in the ${car.name} (${formatPrice(car.basePrice)}). Please confirm availability and delivery timelines.`;
+                window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+            };
+
+            return (
+                <div className="bg-white rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden shadow-2xl border border-white flex flex-col group transition-all hover:shadow-blue-200/40 relative">
+                    {/* Media Section */}
+                    <div className="relative h-60 md:h-72 bg-[#fcfcfc] overflow-hidden">
+                        <Gallery images={car.images} alt={car.name} disabled={car.status === 'Sold'} />
+
+                        {/* Top Badges */}
+                        <div className="absolute top-6 left-6 md:top-8 md:left-8 flex flex-col gap-2 z-30 pointer-events-none">
+                            <span className="bg-white/95 backdrop-blur px-3 py-1 md:px-4 md:py-1.5 rounded-full text-[8px] md:text-[10px] font-black uppercase tracking-widest shadow-xl border border-slate-100">{car.category}</span>
+                            {car.power.toLowerCase().includes('electric') && (
+                                <span className="bg-amber text-ink px-3 py-1 md:px-4 md:py-1.5 rounded-full text-[8px] md:text-[10px] font-black uppercase flex items-center gap-1.5 shadow-lg shadow-amber/30">
+                                    <Icon name="zap" className="w-3 h-3 md:w-3.5 md:h-3.5 fill-current"/> EV
+                                </span>
+                            )}
+                        </div>
+
+                        {/* Start Engine UX Callout */}
+                        {car.video && car.status !== 'Sold' && (
+                            <button 
+                                onClick={() => setActiveVideo(car.video)} 
+                                className="absolute top-6 right-6 md:top-8 md:right-8 z-30 bg-amber text-ink px-4 py-2 md:px-5 md:py-2.5 rounded-2xl shadow-2xl pulse-engine flex items-center gap-2 md:gap-3 group/btn hover:bg-ink hover:text-white transition-colors"
+                            >
+                                <span className="text-[8px] md:text-[10px] font-black uppercase tracking-widest">Start Engine</span>
+                                <Icon name="play" className="w-3 h-3 md:w-4 md:h-4 fill-current"/>
+                            </button>
+                        )}
+
+                        {car.status === 'Sold' && (
+                            <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center z-40">
+                                <div className="bg-red-600 text-white px-6 py-3 md:px-10 md:py-5 font-black text-xl md:text-3xl border-4 md:border-8 border-white -rotate-12 uppercase tracking-tighter sold-stencil shadow-2xl">SOLD</div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Content Section */}
+                    <div className="p-8 md:p-10 flex-grow flex flex-col">
+                        <div className="flex justify-between items-start mb-2">
+                            <h3 className="text-xl md:text-2xl font-black uppercase italic leading-tight tracking-tighter line-clamp-2">{car.name}</h3>
+                        </div>
+                        
+                        <div className="flex flex-wrap items-center gap-3 md:gap-4 mb-6 md:mb-8">
+                            <p className="text-[8px] md:text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] flex items-center gap-1.5 md:gap-2">
+                                <Icon name="truck" className="w-3 md:w-3.5 h-3 md:h-3.5 text-blue-600"/> Nationwide Delivery
+                            </p>
+                            <div className="hidden xs:block h-1 w-1 bg-slate-200 rounded-full"></div>
+                            <span className="text-[8px] md:text-[10px] text-ink font-black uppercase tracking-widest flex items-center gap-1.5">
+                                <Icon name="shield" className="w-3 md:w-3.5 h-3 md:h-3.5"/> Quality Verified
+                            </span>
+                        </div>
+
+                        <div className="mt-auto border-t border-slate-100 pt-6 md:pt-8">
+                            <div className="flex flex-col xs:flex-row justify-between items-start xs:items-end gap-4 mb-6 md:mb-8">
+                                <div>
+                                    <p className="text-[9px] md:text-[11px] font-black text-slate-300 uppercase tracking-[0.3em] mb-1">Price</p>
+                                    <p className="font-display text-ink font-black text-2xl md:text-3xl tracking-tight italic">{formatPrice(car.basePrice)}</p>
+                                </div>
+                                <button 
+                                    onClick={handleEnquiry} 
+                                    disabled={car.status === 'Sold'} 
+                                    className={`w-full xs:w-auto px-6 md:px-8 py-3.5 md:py-4 rounded-[1.2rem] md:rounded-[1.5rem] font-black text-[9px] md:text-[11px] uppercase tracking-[0.2em] transition-all shadow-xl active:scale-95 ${
+                                        car.status === 'Sold' 
+                                        ? 'bg-slate-100 text-slate-300 cursor-not-allowed' 
+                                        : 'bg-ink text-white hover:bg-amber hover:text-ink'
+                                    }`}
+                                >
+                                    {car.status === 'Sold' ? 'Sold' : 'Check Availability'}
+                                </button>
+                            </div>
+
+                            <button 
+                                onClick={() => setShowSpecs(!showSpecs)} 
+                                className="w-full bg-slate-50 border border-slate-100 p-3 md:p-4 rounded-xl md:rounded-2xl text-[8px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-blue-600 transition-all flex items-center justify-center gap-2 md:gap-3"
+                            >
+                                <Icon name="info" className={`w-3.5 md:w-4 h-3.5 md:h-4 transition-transform ${showSpecs ? 'rotate-180' : ''}`}/> 
+                                {showSpecs ? 'Collapse Specifications' : 'View Full Specifications'}
+                            </button>
+
+                            {showSpecs && (
+                                <div className="mt-4 p-5 md:p-6 bg-slate-50/50 rounded-2xl md:rounded-3xl border border-slate-100 animate-fade-in text-center">
+                                    <p className="text-[10px] md:text-[12px] font-bold text-slate-500 uppercase italic tracking-tight leading-relaxed">
+                                        {car.description || 'Premium build. Contact our private concierge for complete mechanical certification and logistics surcharge details.'}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    {activeVideo && <VideoModal url={activeVideo} onClose={() => setActiveVideo(null)} />}
+                </div>
+            );
+        };
+
+        // --- MAIN APP ---
+        const App = () => {
+            const [cars, setCars] = useState(Array.isArray(window.__INITIAL_CARS__) ? window.__INITIAL_CARS__ : []);
+            const [rates, setRates] = useState({ USD: 1, NGN: (typeof window.__INITIAL_RATE__ === 'number' && window.__INITIAL_RATE__ > 0) ? window.__INITIAL_RATE__ : 1550 });
+            const [currency, setCurrency] = useState('NGN');
+            const [loading, setLoading] = useState(!(Array.isArray(window.__INITIAL_CARS__) && window.__INITIAL_CARS__.length));
+            const [search, setSearch] = useState('');
+            const [condition, setCondition] = useState('All');
+            const [fuel, setFuel] = useState('All');
+            const [sortBy, setSortBy] = useState('featured');
+            const [req, setReq] = useState({ make: '', budget: '' });
+
+            const cleanImg = (url) => {
+                if (!url) return '';
+                let t = url.trim().replace(/^"|"$/g, '');
+                if (t.includes('drive.google.com')) {
+                    const id = t.match(/[-\w]{25,}/);
+                    if (id) return `https://lh3.googleusercontent.com/u/0/d/${id[0]}`;
+                }
+                return t;
+            };
+
+            const fetchData = useCallback(async () => {
+                try {
+                    const res = await fetch(`${GOOGLE_SHEET_CSV_URL}&t=${Date.now()}`);
+                    const text = await res.text();
+                    const rows = text.split(/\r?\n/).filter(r => r.trim() !== '');
+                    
+                    const data = rows.slice(1).map((row, idx) => {
+                        const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
+                        return {
+                            id: cols[0] || idx,
+                            name: cols[1] || 'Premium Unit',
+                            basePrice: parseFloat((cols[2] || "0").replace(/[^0-9.]/g, '')) || 0,
+                            category: cols[3] || 'Used',
+                            power: cols[4] || 'Fuel', 
+                            status: cols[5] || 'Available',
+                            images: (cols[6] || '').split(',').map(cleanImg).filter(i => i !== ''),
+                            description: cols[7] || '',
+                            video: cols[8] || ''
+                        };
+                    });
+
+                    const rateRow = data.find(i => i.id.toString().toUpperCase() === 'RATE');
+                    if (rateRow && rateRow.basePrice > 0) setRates(r => ({ ...r, NGN: rateRow.basePrice }));
+                    setCars(data.filter(i => i.id.toString().toUpperCase() !== 'RATE' && i.name.length > 2));
+                } catch (e) { console.error("Sync Failure", e); } finally { setLoading(false); }
+            }, []);
+
+            useEffect(() => { 
+                fetchData(); 
+                const interval = setInterval(fetchData, 120000); 
+                return () => clearInterval(interval);
+            }, [fetchData]);
+
+            const formatPrice = (p) => `${currency === 'USD' ? '$' : '₦'}${Math.round(p * (rates[currency] || 1)).toLocaleString()}`;
+            const conditions = useMemo(() => ['All', ...Array.from(new Set(cars.map(c => c.category).filter(Boolean)))], [cars]);
+            const fuels = useMemo(() => ['All', ...Array.from(new Set(cars.map(c => c.power).filter(Boolean)))], [cars]);
+            const filtered = useMemo(() => {
+                const q = search.trim().toLowerCase();
+                let list = cars.filter(c =>
+                    (!q || c.name.toLowerCase().includes(q)) &&
+                    (condition === 'All' || c.category === condition) &&
+                    (fuel === 'All' || c.power === fuel)
+                );
+                if (sortBy === 'price-asc') list = [...list].sort((a, b) => a.basePrice - b.basePrice);
+                else if (sortBy === 'price-desc') list = [...list].sort((a, b) => b.basePrice - a.basePrice);
+                return list;
+            }, [cars, search, condition, fuel, sortBy]);
+            const activeFilters = (condition !== 'All' ? 1 : 0) + (fuel !== 'All' ? 1 : 0) + (search.trim() !== '' ? 1 : 0);
+            const resetFilters = () => { setSearch(''); setCondition('All'); setFuel('All'); setSortBy('featured'); };
+
+            if (loading) return (
+                <div className="h-screen flex flex-col items-center justify-center bg-ink text-white px-6 text-center">
+                    <div className="animate-pulse"><YMark className="w-14 h-14 md:w-16 md:h-16 mb-8" /></div>
+                    <p className="font-display italic text-2xl md:text-3xl mb-3">Youni <span className="text-amber">Cars</span></p>
+                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.5em] text-slate-400 animate-pulse">Syncing inventory</p>
+                </div>
+            );
+
+            return (
+                <div className="min-h-screen selection:bg-amber selection:text-ink">
+                    {/* Top Bar */}
+                    <nav className="sticky top-0 z-50 glass-nav border-b border-slate-100 px-6 md:px-8 py-5 md:py-6 flex justify-between items-center shadow-sm">
+                        <a href="#showroom" className="flex items-center gap-2.5 md:gap-3">
+                            <YMark className="w-8 h-8 md:w-9 md:h-9" />
+                            <span className="font-display italic text-lg md:text-2xl tracking-tight">Youni <span className="text-amber">Cars</span></span>
+                        </a>
+                        <div className="flex items-center gap-4 md:gap-8">
+                            <div className="hidden md:flex gap-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">
+                                <a href="#showroom" className="hover:text-blue-600 transition">Fleet</a>
+                                <a href="#request" className="hover:text-blue-600 transition">Sourcing</a>
+                                <a href="#financing" className="hover:text-blue-600 transition">Financing</a>
+                            </div>
+                            <div className="flex items-center gap-1.5 md:gap-2 bg-slate-100 p-1 md:p-1.5 rounded-[0.8rem] md:rounded-[1rem]">
+                                <button onClick={() => setCurrency('USD')} className={`px-3 md:px-4 py-1.5 rounded-[0.6rem] md:rounded-[0.7rem] text-[9px] md:text-[10px] font-black transition-all ${currency === 'USD' ? 'bg-amber text-ink shadow-md' : 'text-slate-400 hover:text-slate-600'}`}>USD</button>
+                                <button onClick={() => setCurrency('NGN')} className={`px-3 md:px-4 py-1.5 rounded-[0.6rem] md:rounded-[0.7rem] text-[9px] md:text-[10px] font-black transition-all ${currency === 'NGN' ? 'bg-amber text-ink shadow-md' : 'text-slate-400 hover:text-slate-600'}`}>NGN</button>
+                            </div>
+                        </div>
+                    </nav>
+
+                    {/* Bottom Tabs for Mobile */}
+                    <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden glass-nav border-t border-slate-100 px-6 py-4 flex justify-around items-center shadow-[0_-5px_20px_rgba(0,0,0,0.05)]">
+                        <a href="#showroom" className="relative flex flex-col items-center gap-1 text-slate-400 hover:text-blue-600 transition-colors">
+                            <Icon name="car" className="w-5 h-5"/>
+                            <span className="text-[8px] font-black uppercase tracking-widest">Fleet</span>
+                        </a>
+                        <a href="#request" className="relative flex flex-col items-center gap-1 text-slate-400 hover:text-blue-600 transition-colors">
+                            <Icon name="search" className="w-5 h-5"/>
+                            <span className="text-[8px] font-black uppercase tracking-widest">Source</span>
+                        </a>
+                        <a href="#financing" className="relative flex flex-col items-center gap-1 text-slate-400 hover:text-blue-600 transition-colors">
+                            <Icon name="credit" className="w-5 h-5"/>
+                            <span className="text-[8px] font-black uppercase tracking-widest">Finance</span>
+                        </a>
+                    </nav>
+
+                    <header id="showroom" className="max-w-7xl mx-auto pt-16 md:pt-32 pb-16 md:pb-24 px-6 md:px-8 text-center">
+                        <h1 className="sr-only">Youni Cars — buy quality new and used cars in Nigeria with nationwide delivery</h1>
+                        <p className="text-ink text-[10px] md:text-[11px] font-black uppercase tracking-[0.4em] md:tracking-[0.6em] mb-6 md:mb-8">Sourced · Inspected · Delivered <span className="text-amber">·</span> Nationwide</p>
+                        <h2 className="font-display text-5xl md:text-8xl lg:text-9xl font-black italic tracking-tight leading-[0.9] md:leading-[0.85] mb-12 md:mb-16">The <br/>Showroom.</h2>
+                        <div className="max-w-4xl mx-auto text-left">
+                            <div className="relative mb-5 md:mb-7">
+                                <span className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300"><Icon name="search" className="w-5 h-5"/></span>
+                                <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search make or model..." aria-label="Search vehicles" className="w-full bg-white border border-slate-100 rounded-2xl md:rounded-[1.5rem] pl-14 pr-5 py-4 md:py-5 text-sm md:text-base font-medium shadow-sm outline-none focus:ring-4 ring-blue-50 transition-all" />
+                            </div>
+                            {conditions.length > 1 && (
+                                <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-3">
+                                    {conditions.map(c => (
+                                        <button key={c} onClick={() => setCondition(c)} className={`px-5 md:px-7 py-2 md:py-2.5 rounded-xl md:rounded-2xl text-[9px] md:text-[11px] font-black uppercase tracking-widest transition-all ${condition === c ? 'bg-ink text-white shadow-lg' : 'bg-white text-slate-400 border border-slate-100 hover:border-slate-300'}`}>{c}</button>
+                                    ))}
+                                </div>
+                            )}
+                            {fuels.length > 1 && (
+                                <div className="flex flex-wrap justify-center gap-2 mb-6 md:mb-8">
+                                    {fuels.map(fl => (
+                                        <button key={fl} onClick={() => setFuel(fl)} className={`px-4 md:px-5 py-1.5 md:py-2 rounded-full text-[8px] md:text-[10px] font-black uppercase tracking-widest transition-all ${fuel === fl ? 'bg-amber text-ink shadow' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}`}>{fl}</button>
+                                    ))}
+                                </div>
+                            )}
+                            <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
+                                <div className="flex items-center gap-2">
+                                    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400">Sort</span>
+                                    <select value={sortBy} onChange={e => setSortBy(e.target.value)} aria-label="Sort vehicles" className="bg-white border border-slate-100 rounded-xl px-4 py-2 text-[10px] md:text-xs font-bold uppercase tracking-wider shadow-sm outline-none cursor-pointer">
+                                        <option value="featured">Featured</option>
+                                        <option value="price-asc">Price: Low to High</option>
+                                        <option value="price-desc">Price: High to Low</option>
+                                    </select>
+                                </div>
+                                <span className="text-[10px] md:text-xs font-black uppercase tracking-widest text-slate-400">{filtered.length} {filtered.length === 1 ? 'vehicle' : 'vehicles'}</span>
+                                {activeFilters > 0 && (
+                                    <button onClick={resetFilters} className="text-[10px] md:text-xs font-black uppercase tracking-widest text-amber hover:text-ink transition-colors">Reset ✕</button>
+                                )}
+                            </div>
+                        </div>
+                    </header>
+
+                    <main className="max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-16">
+                        {filtered.map(car => <Card key={car.id} car={car} formatPrice={formatPrice} />)}
+                    </main>
+
+                    {/* BESPOKE SOURCING */}
+                    <section id="request" className="max-w-5xl mx-auto px-6 md:px-8 mt-24 md:mt-48">
+                        <div className="bg-white rounded-[3rem] md:rounded-[4.5rem] p-10 md:p-24 shadow-2xl border border-slate-50 text-center relative overflow-hidden">
+                            <div className="absolute top-0 left-0 w-full h-2 md:h-3 bg-blue-600"></div>
+                            <div className="bg-blue-50 w-16 h-16 md:w-24 md:h-24 rounded-full flex items-center justify-center mx-auto mb-8 md:mb-10">
+                                <Icon name="search" className="w-7 h-7 md:w-10 md:h-10 text-blue-600"/>
+                            </div>
+                            <h3 className="font-display text-3xl md:text-5xl font-black italic tracking-tight mb-4 md:mb-6 leading-tight">Can't find it?<br/>We'll source it.</h3>
+                            <p className="text-slate-400 font-medium mb-10 md:mb-16 max-w-lg mx-auto text-sm md:text-lg leading-relaxed uppercase tracking-tight italic">
+                                Tell us the make, model and budget. We find it, inspect it, and deliver it to your door anywhere in Nigeria.
+                            </p>
+                            
+                            <form 
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                    // Silently log enquiry to backend (non-blocking)
+                                    fetch(`${BACKEND_API}/api/enquiries`, {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({ type: 'bespoke', make: req.make, budget: req.budget }),
+                                    }).catch(() => {}); // backend offline = no-op
+                                    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=Hi Youni Cars — sourcing request:\n- Make/Model: ${req.make}\n- Target budget: ${req.budget}`, '_blank');
+                                }}
+                                className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6"
+                            >
+                                <input required type="text" placeholder="Desired Brand / Model" className="bg-slate-50 p-5 md:p-7 rounded-2xl md:rounded-[2rem] outline-none font-bold text-sm md:text-base focus:ring-4 ring-blue-50 transition-all shadow-inner" value={req.make} onChange={e => setReq({...req, make: e.target.value})} />
+                                <input required type="text" placeholder="Target budget" className="bg-slate-50 p-5 md:p-7 rounded-2xl md:rounded-[2rem] outline-none font-bold text-sm md:text-base focus:ring-4 ring-blue-50 transition-all shadow-inner" value={req.budget} onChange={e => setReq({...req, budget: e.target.value})} />
+                                <button type="submit" className="md:col-span-2 bg-ink text-white py-5 md:py-8 rounded-2xl md:rounded-[2rem] font-black uppercase tracking-[0.2em] md:tracking-[0.3em] text-[10px] md:text-sm hover:bg-amber hover:text-ink transition-all shadow-2xl">Send Sourcing Request</button>
+                            </form>
+                        </div>
+                    </section>
+
+                    {/* STRATEGIC CREDIT */}
+                    <section id="financing" className="max-w-7xl mx-auto px-6 md:px-8 mt-24 md:mt-48">
+                        <div className="bg-slate-950 rounded-[3rem] md:rounded-[4.5rem] p-12 md:p-32 text-white text-center relative overflow-hidden">
+                            <div className="absolute top-0 right-0 p-12 md:p-16 opacity-[0.03] rotate-12"><Icon name="credit" className="w-64 h-64 md:w-96 md:h-96 text-white"/></div>
+                            <span className="bg-amber text-ink px-4 md:px-6 py-1.5 md:py-2 rounded-full text-[8px] md:text-[10px] font-black uppercase tracking-[0.4em] md:tracking-[0.5em] mb-8 md:mb-12 inline-block">Financing</span>
+                            <h3 className="font-display text-4xl md:text-8xl font-black italic tracking-tight mb-8 md:mb-10 leading-[0.9]">Flexible <br/>payment plans.</h3>
+                            <p className="text-slate-400 max-w-2xl mx-auto mb-10 md:mb-16 text-sm md:text-xl font-medium italic leading-relaxed uppercase tracking-tight">
+                                Talk to us about structuring a payment plan that works for you — spread the cost across an agreed schedule.
+                            </p>
+                            <button 
+                                onClick={() => window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=Hi Youni Cars — I'd like to discuss a payment plan for a vehicle.`, '_blank')} 
+                                className="bg-white text-slate-950 px-10 md:px-16 py-5 md:py-8 rounded-2xl md:rounded-[2rem] font-black uppercase tracking-[0.2em] md:tracking-[0.3em] text-[10px] md:text-sm hover:scale-105 active:scale-95 transition-all shadow-2xl"
+                            >
+                                Talk to us
+                            </button>
+                        </div>
+                    </section>
+
+                    <footer className="max-w-7xl mx-auto mt-24 md:mt-48 text-center border-t border-slate-100 pt-16 md:pt-24 px-6 md:px-8 pb-32 md:pb-24">
+                        <div className="flex justify-center gap-8 md:gap-12 text-slate-200 mb-8 md:mb-12">
+                            <Icon name="truck" className="w-6 md:w-8 h-6 md:h-8"/>
+                            <Icon name="car" className="w-6 md:w-8 h-6 md:h-8"/>
+                            <Icon name="zap" className="w-6 md:w-8 h-6 md:h-8"/>
+                        </div>
+                        <p className="text-slate-400 text-[8px] md:text-[10px] font-black uppercase tracking-[0.4em] md:tracking-[0.6em] mb-4 leading-relaxed italic">
+                            Youni Cars • Vehicle Sourcing & Nationwide Delivery • DMS v5.1.0
+                        </p>
+                        <p className="text-slate-300 text-[7px] md:text-[8px] font-bold uppercase tracking-[0.3em] md:tracking-[0.4em]">A division of Made by Youni Ltd • RC 9411546 • Live inventory · Nationwide delivery active</p>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
