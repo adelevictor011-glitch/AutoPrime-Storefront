@@ -96,6 +96,7 @@ ol,ul{list-style:none;margin:0;padding:0}
 .bg-white\/20{background-color:rgba(255,255,255,0.2);}
 .bg-white\/60{background-color:rgba(255,255,255,0.6);}
 .bg-white\/95{background-color:rgba(255,255,255,0.95);}
+.block{display:block;}
 .border{border-width:1px;}
 .border-4{border-width:4px;}
 .border-b{border-bottom-width:1px;}
@@ -156,6 +157,7 @@ ol,ul{list-style:none;margin:0;padding:0}
 .hover\:bg-white\/40:hover{background-color:rgba(255,255,255,0.4);}
 .hover\:bg-white\/90:hover{background-color:rgba(255,255,255,0.9);}
 .hover\:shadow-blue-200\/40:hover{box-shadow:0 12px 28px -6px rgba(247,212,146,0.4);}
+.hover\:text-amber:hover{color:rgb(245 166 35);}
 .hover\:text-blue-600:hover{color:rgb(245 166 35);}
 .hover\:text-ink:hover{color:rgb(13 13 15);}
 .hover\:text-white:hover{color:rgb(255 255 255);}
@@ -191,6 +193,7 @@ ol,ul{list-style:none;margin:0;padding:0}
 .min-w-full{min-width:100%;}
 .ml-0\.5{margin-left:0.125rem;}
 .mt-24{margin-top:6rem;}
+.mt-3{margin-top:0.75rem;}
 .mt-4{margin-top:1rem;}
 .mt-auto{margin-top:auto;}
 .mx-auto{margin-left:auto;margin-right:auto;}
@@ -441,7 +444,11 @@ body { font-family: 'DM Sans', sans-serif; scroll-behavior: smooth; }
 
     <!--YC:INITIAL-->
     <script type="text/babel">
-        const { useState, useEffect, useMemo, useCallback, useRef } = React;
+                const { useState, useEffect, useMemo, useCallback, useRef } = React;
+
+        // --- URL slugs (must match slugify in build.js) ---
+        const slugify = (s) => String(s).toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').slice(0, 60) || 'vehicle';
+        const assignSlugs = (cars) => { const seen = Object.create(null); return cars.map(c => { let base = slugify(c.name), s = base, n = 1; while (seen[s]) { n++; s = base + '-' + n; } seen[s] = 1; return s; }); };
 
         // --- CONFIGURATION ---
         const BRAND = "Youni Cars";
@@ -651,7 +658,7 @@ body { font-family: 'DM Sans', sans-serif; scroll-behavior: smooth; }
         };
 
         // --- COMPONENT: VEHICLE CARD ---
-        const Card = ({ car, formatPrice }) => {
+        const Card = ({ car, slug, formatPrice }) => {
             const [showSpecs, setShowSpecs] = useState(false);
             const [activeVideo, setActiveVideo] = useState(null);
 
@@ -737,6 +744,8 @@ body { font-family: 'DM Sans', sans-serif; scroll-behavior: smooth; }
                                 {showSpecs ? 'Collapse Specifications' : 'View Full Specifications'}
                             </button>
 
+                            <a href={`/showroom/${slug}`} className="block w-full text-center mt-3 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-amber transition-colors">View details page →</a>
+
                             {showSpecs && (
                                 <div className="mt-4 p-5 md:p-6 bg-slate-50/50 rounded-2xl md:rounded-3xl border border-slate-100 animate-fade-in text-center">
                                     <p className="text-[10px] md:text-[12px] font-bold text-slate-500 uppercase italic tracking-tight leading-relaxed">
@@ -806,7 +815,9 @@ body { font-family: 'DM Sans', sans-serif; scroll-behavior: smooth; }
                 return () => clearInterval(interval);
             }, [fetchData]);
 
-            const formatPrice = (p) => `${currency === 'USD' ? '$' : '₦'}${Math.round(p * (rates[currency] || 1)).toLocaleString()}`;
+            const formatPrice = (p) => (p > 0) ? `${currency === 'USD' ? '$' : '₦'}${Math.round(p * (rates[currency] || 1)).toLocaleString()}` : 'Price on request';
+            const slugs = useMemo(() => assignSlugs(cars), [cars]);
+            const slugFor = (car) => { const i = cars.indexOf(car); return i >= 0 ? slugs[i] : slugify(car.name); };
             const conditions = useMemo(() => ['All', ...Array.from(new Set(cars.map(c => c.category).filter(Boolean)))], [cars]);
             const fuels = useMemo(() => ['All', ...Array.from(new Set(cars.map(c => c.power).filter(Boolean)))], [cars]);
             const filtered = useMemo(() => {
@@ -909,7 +920,7 @@ body { font-family: 'DM Sans', sans-serif; scroll-behavior: smooth; }
                     </header>
 
                     <main className="max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-16">
-                        {filtered.map(car => <Card key={car.id} car={car} formatPrice={formatPrice} />)}
+                        {filtered.map((car, i) => <Card key={`${car.id}-${i}`} car={car} slug={slugFor(car)} formatPrice={formatPrice} />)}
                     </main>
 
                     {/* BESPOKE SOURCING */}
