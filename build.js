@@ -1,5 +1,5 @@
 /**
- * Youni Cars — deploy-time pre-render.
+ * Cars by Youni — deploy-time pre-render.
  * Fetches the live Google Sheet and bakes the inventory into the site:
  *   - index.html: visible cards + schema.org ItemList + a data seed (instant hydration)
  *   - showroom/<slug>.html: one crawlable, shareable page per car (own OG image + Car schema)
@@ -41,7 +41,8 @@ function parseSheet(text) {
       status: cols[5] || 'Available',
       images: (cols[6] || '').split(',').map(cleanImg).filter(i => i !== ''),
       description: cols[7] || '',
-      video: cols[8] || ''
+      video: cols[8] || '',
+      body: cols[9] || ''
     };
   });
   const rateRow = data.find(i => i.id.toString().toUpperCase() === 'RATE');
@@ -69,8 +70,9 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
 const FALLBACK_IMG = 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800';
 // "Price on request" when there is no real price (fixes ₦0 listings)
 const priceLabel = (base, rate) => (base > 0) ? ('₦' + Math.round(base * rate).toLocaleString('en-NG')) : 'Price on request';
-const waLink = (c, rate) => `https://wa.me/${WHATSAPP}?text=` + encodeURIComponent(
-  `Hi Youni Cars — I'm interested in the ${c.name} (${priceLabel(c.basePrice, rate)}). Please confirm availability and delivery timelines.`);
+const CONTACT_EMAIL = "carsbyyouni@gmail.com";
+const emailLink = (c, rate) => `mailto:${CONTACT_EMAIL}?subject=` + encodeURIComponent('Enquiry: ' + c.name) + '&body=' + encodeURIComponent(
+  `Hi Cars by Youni — I'm interested in the ${c.name} (${priceLabel(c.basePrice, rate)}). Please confirm availability and delivery timelines.`);
 
 // ---- static (crawlable) cards on the home page; each links to its detail page ----
 function renderCards(cars, rate, slugs) {
@@ -110,13 +112,13 @@ function renderItemList(cars, rate, slugs) {
   const ld = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "name": "Youni Cars — Available Vehicles",
+    "name": "Cars by Youni — Available Vehicles",
     "numberOfItems": cars.length,
     "itemListElement": cars.map((c, i) => {
       const offer = {
         "@type": "Offer",
         "availability": String(c.status).toLowerCase() === 'sold' ? "https://schema.org/SoldOut" : "https://schema.org/InStock",
-        "seller": { "@type": "AutoDealer", "name": "Youni Cars" }
+        "seller": { "@type": "AutoDealer", "name": "Cars by Youni" }
       };
       if (c.basePrice > 0) { offer.priceCurrency = "NGN"; offer.price = Math.round(c.basePrice * rate); }
       return {
@@ -152,21 +154,21 @@ function renderCarPage(c, slug, rate) {
   const price = priceLabel(c.basePrice, rate);
   const url = `${SITE}/showroom/${slug}`;
   const desc = c.description ? c.description.replace(/\s+/g, ' ').trim()
-    : `${c.category} ${c.name} — sourced, inspected and delivered nationwide across Nigeria by Youni Cars.`;
-  const metaDesc = `${c.name} — ${price}. ${c.category} · ${c.power}. Nationwide delivery across Nigeria from Youni Cars.`;
+    : `${c.category} ${c.name} — sourced, inspected and delivered nationwide across Nigeria by Cars by Youni.`;
+  const metaDesc = `${c.name} — ${price}. ${c.category} · ${c.power}. Nationwide delivery across Nigeria from Cars by Youni.`;
 
-  const offer = { "@type": "Offer", "availability": sold ? "https://schema.org/SoldOut" : "https://schema.org/InStock", "url": url, "seller": { "@type": "AutoDealer", "name": "Youni Cars" } };
+  const offer = { "@type": "Offer", "availability": sold ? "https://schema.org/SoldOut" : "https://schema.org/InStock", "url": url, "seller": { "@type": "AutoDealer", "name": "Cars by Youni" } };
   if (c.basePrice > 0) { offer.priceCurrency = "NGN"; offer.price = Math.round(c.basePrice * rate); }
   const ld = {
     "@context": "https://schema.org", "@type": "Car", "name": c.name, "url": url,
     "image": imgs, "description": desc, "fuelType": c.power,
     "itemCondition": /new/i.test(c.category) ? "https://schema.org/NewCondition" : "https://schema.org/UsedCondition",
-    "brand": { "@type": "Brand", "name": (c.name.split(' ').find(w => /^[A-Za-z]{3,}$/.test(w)) || "Youni Cars") },
+    "brand": { "@type": "Brand", "name": (c.name.split(' ').find(w => /^[A-Za-z]{3,}$/.test(w)) || "Cars by Youni") },
     "offers": offer
   };
   const crumbs = {
     "@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Youni Cars", "item": SITE + "/" },
+      { "@type": "ListItem", "position": 1, "name": "Cars by Youni", "item": SITE + "/" },
       { "@type": "ListItem", "position": 2, "name": c.name, "item": url }
     ]
   };
@@ -178,19 +180,19 @@ function renderCarPage(c, slug, rate) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${esc(c.name)} | Youni Cars</title>
+<title>${esc(c.name)} | Cars by Youni</title>
 <meta name="description" content="${esc(metaDesc)}">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#0d0d0f">
 <link rel="canonical" href="${url}">
 <meta property="og:type" content="product">
-<meta property="og:site_name" content="Youni Cars">
-<meta property="og:title" content="${esc(c.name)} — Youni Cars">
+<meta property="og:site_name" content="Cars by Youni">
+<meta property="og:title" content="${esc(c.name)} — Cars by Youni">
 <meta property="og:description" content="${esc(metaDesc)}">
 <meta property="og:url" content="${url}">
 <meta property="og:image" content="${esc(main)}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="${esc(c.name)} — Youni Cars">
+<meta name="twitter:title" content="${esc(c.name)} — Cars by Youni">
 <meta name="twitter:description" content="${esc(metaDesc)}">
 <meta name="twitter:image" content="${esc(main)}">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
@@ -217,7 +219,7 @@ h1{font-family:'Fraunces',serif;font-style:italic;font-weight:900;font-size:30px
 </style>
 </head>
 <body>
-<header class="nav"><a href="/" style="display:flex;align-items:center;gap:10px;text-decoration:none">${YMARK}<span class="brand">Youni <span class="amber">Cars</span></span></a></header>
+<header class="nav"><a href="/" style="display:flex;align-items:center;gap:10px;text-decoration:none">${YMARK}<span class="brand">Cars by <span class="amber">Youni</span></span></a></header>
 <main class="wrap">
   <a href="/" style="text-decoration:none;color:#94a3b8;font-weight:700;font-size:12px;letter-spacing:.1em;text-transform:uppercase">&larr; All vehicles</a>
   <div class="stage" style="margin-top:14px"><img id="yc-main" class="main" src="${esc(main)}" alt="${esc(c.name)}"></div>
@@ -228,12 +230,12 @@ h1{font-family:'Fraunces',serif;font-style:italic;font-weight:900;font-size:30px
     <h1>${esc(c.name)}</h1>
     <div class="price">${esc(price)}</div>
     <p class="desc">${esc(desc)}</p>
-    ${sold ? '' : `<a class="btn" href="${waLink(c, rate)}" rel="nofollow">Check availability</a>`}
+    ${sold ? '' : `<a class="btn" href="${emailLink(c, rate)}" rel="nofollow">Check availability</a>`}
     <a class="btn ghost" href="/#request" style="margin-left:10px">Can't find it? We'll source it</a>
     <p style="color:#64748b;font-size:13px;margin-top:18px">Nationwide delivery across Nigeria &middot; financing available (ask for terms).</p>
   </div>
 </main>
-<div class="foot">Youni Cars &middot; a division of Made by Youni Ltd &middot; RC 9411546</div>
+<div class="foot">Cars by Youni &middot; a division of Made by Youni Ltd &middot; RC 9411546</div>
 </body>
 </html>`;
 }
