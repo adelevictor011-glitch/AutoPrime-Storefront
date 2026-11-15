@@ -230,7 +230,7 @@ h1{font-family:'Fraunces',serif;font-style:italic;font-weight:900;font-size:30px
     <h1>${esc(c.name)}</h1>
     <div class="price">${esc(price)}</div>
     <p class="desc">${esc(desc)}</p>
-    ${sold ? '' : `<a class="btn" href="${emailLink(c, rate)}" rel="nofollow">Check availability</a>`}
+    ${sold ? '' : `<a class="btn" href="/?enquire=${encodeURIComponent(slug)}" rel="nofollow">Check availability</a>`}
     <a class="btn ghost" href="/#request" style="margin-left:10px">Can't find it? We'll source it</a>
     <p style="color:#64748b;font-size:13px;margin-top:18px">Nationwide delivery across Nigeria &middot; financing available (ask for terms).</p>
   </div>
